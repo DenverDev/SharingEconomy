@@ -606,6 +606,10 @@ text-decoration: none;
 background-color: #001c31;
 }
 
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+background-color: #001c31;
+}
+
 .mapui .nav .open>a, .nav .open>a:hover, .nav .open>a:focus {
 background-color: #001c31;
 }
