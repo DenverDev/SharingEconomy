@@ -19,7 +19,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
             content: "<b>Address:</b> ${ADDRESS}<br/>"
         });
 
-        var pnrLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/SharedTransportation/FeatureServer/0", {
+        var pnrLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/1", {
             id: "pnr",
             mode: FeatureLayer.MODE_ONDEMAND,
             infoTemplate: rtdInfoTemplate,
@@ -27,7 +27,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
         });
         pnrLayer.renderer = pnrRenderer;
 
-        var lightRailStationLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/SharedTransportation/FeatureServer/1", {
+        var lightRailStationLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/2", {
             id: "lightrailstations",
             mode: FeatureLayer.MODE_ONDEMAND,
             infoTemplate: rtdInfoTemplate,
@@ -35,7 +35,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
         });
         lightRailStationLayer.renderer = rtdLightRailStationRenderer;
 
-        var lightRailLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/SharedTransportation/FeatureServer/4", {
+        var lightRailLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/5", {
             id: "lightraillines",
             mode: FeatureLayer.MODE_ONDEMAND
         });
