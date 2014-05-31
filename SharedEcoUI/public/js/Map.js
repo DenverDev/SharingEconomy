@@ -39,7 +39,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
 		infoTemplate = $("#info_view");
 		infoTemplate = _.template( infoTemplate.html() );
 		var bcycleInfoTemplate = new InfoTemplate({
-			title: "${STATION_NA}",
+			title: "B-Cycle ${STATION_NA}",
 			content: "${ADDRESS_LI}<br/>${NUM_DOCKS} Bike Docks<br/>"
 		});
 
