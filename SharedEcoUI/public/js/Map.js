@@ -10,10 +10,11 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
             slider: true,
             sliderStyle: "small"
         });
-        var bikeRackRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/parknride.png', 24, 34));
-        var busStopRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bus.png', 24, 34));
-        var pnrRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/parknride.png', 24, 34));
-        var rtdLightRailStationRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/lightrail.png', 24, 34));
+        var bikeRackRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/parknride.png', 25, 36));
+        var busStopRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bus.png', 25, 36));
+        var pnrRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/parknride.png', 25, 36));
+        var rtdLightRailStationRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/lightrail.png', 25, 36));
+        var bCycleRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bcycle.png', 25, 36));
 
         //Set up the pop up for displaying additional information about a point
         var rtdInfoTemplate = new InfoTemplate({
@@ -34,6 +35,13 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
             outFields: ['STOPNAME', 'ROUTES']
         });
         busStopLayer.renderer = busStopRenderer;
+
+		infoTemplate = $("#info_view");
+		infoTemplate = _.template( infoTemplate.html() );
+		var bcycleInfoTemplate = new InfoTemplate({
+			title: "${STATION_NA}",
+			content: "${ADDRESS_LI}<br/>${NUM_DOCKS} Bike Docks<br/>"
+		});
 
         var pnrLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/1", {
             id: "pnr",
@@ -61,6 +69,14 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
             mode: FeatureLayer.MODE_ONDEMAND
         });
 
-        map.addLayers([lightRailLayer, bikeRouteLayer, pnrLayer, lightRailStationLayer, busStopLayer]);
+		var bCycleLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/0", {
+			id: "bcyclelocations",
+			mode: FeatureLayer.MODE_ONDEMAND,
+			infoTemplate: bcycleInfoTemplate,
+			outFields: ['STATION_NA', 'ADDRESS_LI', 'CITY', 'STATE', 'ZIP', 'NUM_DOCKS']
+		});
+		bCycleLayer.renderer = bCycleRenderer;
+
+        map.addLayers([lightRailLayer, bikeRouteLayer, pnrLayer, lightRailStationLayer, busStopLayer, bCycleLayer]);
 
     });
