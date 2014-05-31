@@ -340,7 +340,7 @@ html,
 body {
   height: 100%;
   width: 100%;
-  font-family:'Lato',Arial,sans-serif !important	;
+  font-family:'Lato',Arial,sans-serif;
 }
 
 /* fix bs3 horizontal scrollbar bug */
@@ -631,3 +631,9 @@ min-height: 1px;
 padding-left: 0px;
 padding-right: 0px;
 }*/
+
+.mapui li {
+	padding:0px;
+	font-family:'Lato',Arial,sans-serif;
+	font-weight:300;
+}
