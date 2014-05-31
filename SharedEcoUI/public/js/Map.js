@@ -1,7 +1,7 @@
 var map;
 require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symbols/PictureMarkerSymbol",
-"esri/symbols/SimpleMarkerSymbol", "esri/renderers/SimpleRenderer", "dojo/domReady!"],
-    function (Map, InfoTemplate, FeatureLayer, PictureMarkerSymbol, SimpleMarkerSymbol, SimpleRenderer) {
+"esri/symbols/SimpleMarkerSymbol", "esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dijit/popup", "dojo/domReady!"],
+    function (Map, InfoTemplate, FeatureLayer, PictureMarkerSymbol, SimpleMarkerSymbol, SimpleRenderer, TooltipDialog, dijitPopup) {
 
         map = new Map("map", {
             basemap: "streets",
@@ -22,12 +22,26 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
             title: "${NAME}",
             content: "<b>Address:</b> ${ADDRESS}<br/>"
         });
+
+        //Set up the tooltip for hovering over points
+        var dialog = new TooltipDialog({
+            id: "tooltipDialog",
+        });
+        dialog.startup();
         
         var bikeRackLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/3", {
             id: "bikeracks",
             mode: FeatureLayer.MODE_ONDEMAND,
         });
         bikeRackLayer.renderer = bikeRackRenderer;
+        bikeRackLayer.on("mouse-over", function (e) {
+            dialog.setContent("Bike Rack");
+            dijitPopup.open({
+                popup: dialog,
+                x: e.pageX,
+                y: e.pageY
+            });
+        });
 
         var busStopLayer = new FeatureLayer("http://services.arcgis.com/IZtlGBUe4KTzLOl4/ArcGIS/rest/services/BPX_RTD_BusStops3/FeatureServer/0", {
             id: "pnr",
