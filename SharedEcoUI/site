@@ -7,15 +7,8 @@ div, h1, h2, h3, h4, h5, h6, header, nav, a, p {background:transparent;border:0 
 .clearfix {
 	clear:both;
 }
-.DNNEmptyPane {
-	margin:0;
-	padding:0;
-	width:0;
-}
-*:focus {
-	outline: none;
-}
------------------- base elements -------------------*/
+
+/*------------------ base elements -------------------*/
 
 a {
 	color:#006abb;
@@ -40,14 +33,14 @@ a:visited.Normal, a:visited.normal  {
 	color:#015B86!important;
 }
 
-h1, .H1, .h1, h1.head {
+h1 {
 	font-size:130%;
 	font-family:  Arial, sans-serif;
 	color:#036;
 	line-height:1.2em;
 	padding:0 0 3px 0;
 }
-h2, .h2, .H2{
+h2{
 	font-size: 115%;
 	font-family:  Arial, sans-serif;
 	color:#036;
@@ -55,36 +48,21 @@ h2, .h2, .H2{
 	letter-spacing:.05em;
 	padding:0px 0 3px 0;
 }
-h2 span {
-	color:#006abb
-}
+
 h3 {
 	font-size:110%;
 	font-family: "Franklin Gothic Medium", "Franklin Gothic", "ITC Franklin Gothic", Arial, sans-serif;
-	font-smooth: always;
 	color:#363636;
 	line-height:1.2em;
 	padding:0px 0 3px 0;
 }
-.italhead {font-family: "Franklin Gothic Medium", "Franklin Gothic", "ITC Franklin Gothic", Arial, sans-serif;font-style:italic}
 
 p {
-	padding-bottom:1.2em;margin:0;
+	padding-bottom:1.2em;
+    margin:0;
 }
 blockquote {
 	font-family:Arial, Helvetica, sans-serif;
-}
-div.agencycontent li 
-{
-    list-style-image:none;
-    list-style:none;
-	background:url(images/bullet.png) no-repeat 0px 8px;
-	padding-left:10px;
-	margin-left:0!important;
-}
-div.agencycontent ul {
-	padding:0px;
-	margin: 0px 0px 0px 0px!important
 }
 
 li {
@@ -99,11 +77,6 @@ ul li {
 ol li {
 	font-size:100%;
 }
-div.agencycontent ol li {
-list-style-type: decimal;
-background:none;
-margin:0px;
-padding:0px;}
 
 img a:active, a:visited, a:link, a:hover {
 	outline:none;
@@ -153,31 +126,12 @@ hr {border:0;color:#ccc;background-color:#ccc;height:1px;}
 	width:585px
 }
 
-/*#top_nav {
-	padding:25px 0 0px 0;
-	float:right;
-	width:500px
-}
-#top_nav li {
-	float:right;
-	padding:0 7px
-}
-#top_nav li a {
-	font-size:10px;
-	color:#fff;
-	text-transform:uppercase;
-	text-decoration:none
-}
-#top_nav li a:hover {
-	text-decoration:underline
-}*/
-
 /*--------------- footer ---------------*/
 .footerbackground {
 	position:relative;
 	background:url(images/footerbackground.jpg) top repeat-x;
 	vertical-align:top;
-	
+
 }
 .footercontent {
 	position:relative;
@@ -185,7 +139,7 @@ hr {border:0;color:#ccc;background-color:#ccc;height:1px;}
 	height:300px;
 	vertical-align:top;
 	padding-bottom:25px;
-	
+
 }
 footer {
 	vertical-align:top;
@@ -259,7 +213,7 @@ div#footer_logo a {
 	-o-transition: opacity .7 ease;
 	transition: opacity .7s ease;
 	behavior:url(/PIE.htc);
-	
+
 }
 .footer_logo:hover {
 	opacity: 1;
@@ -355,7 +309,7 @@ footerbar {
 	background-image: -ms-linear-gradient(top, #2FA9DE, #003366); 
 	background-image: -o-linear-gradient(top, #2FA9DE, #003366); 
 	background-image: linear-gradient(top, #2FA9DE, #003366); 
-	
+
 	behavior:url(/PIE.htc);   	
 }
 .buttonlightblue:active {
@@ -368,4 +322,4 @@ footerbar {
 .buttonlightblue::-moz-focus-inner {
  border: none;
 }
-
+ 
