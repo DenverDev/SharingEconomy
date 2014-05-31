@@ -10,7 +10,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
             slider: true,
             sliderStyle: "small"
         });
-        var bikeRackRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/parknride.png', 25, 36));
+        var bikeRackRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bikeRack.png', 25, 36));
         var busStopRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bus.png', 25, 36));
         var pnrRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/parknride.png', 25, 36));
         var rtdLightRailStationRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/lightrail.png', 25, 36));
@@ -77,6 +77,6 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
 		});
 		bCycleLayer.renderer = bCycleRenderer;
 
-        map.addLayers([lightRailLayer, bikeRouteLayer, pnrLayer, lightRailStationLayer, busStopLayer, bCycleLayer]);
+        map.addLayers([lightRailLayer, bikeRouteLayer, pnrLayer, lightRailStationLayer, busStopLayer, bikeRackLayer, bCycleLayer]);
 
     });
