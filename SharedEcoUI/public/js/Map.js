@@ -69,6 +69,10 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
             });
         });
 
+        bikeRackLayer.on("mouse-out", function () {
+            dijitPopup.close(dialog);
+        });
+
         var busStopLayer = new FeatureLayer("http://services.arcgis.com/IZtlGBUe4KTzLOl4/ArcGIS/rest/services/BPX_RTD_BusStops3/FeatureServer/0", {
             id: "pnr",
             mode: FeatureLayer.MODE_ONDEMAND,
