@@ -10,6 +10,8 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
             slider: true,
             sliderStyle: "small"
         });
+        var bikeRackRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/parknride.png', 24, 34));
+        var busStopRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bus.png', 24, 34));
         var pnrRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/parknride.png', 24, 34));
         var rtdLightRailStationRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/lightrail.png', 24, 34));
 
@@ -18,6 +20,20 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
             title: "${NAME}",
             content: "<b>Address:</b> ${ADDRESS}<br/>"
         });
+        
+        var bikeRackLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/3", {
+            id: "pnr",
+            mode: FeatureLayer.MODE_ONDEMAND,
+        });
+        bikeRackLayer.renderer = bikeRackRenderer;
+
+        var busStopLayer = new FeatureLayer("http://services.arcgis.com/IZtlGBUe4KTzLOl4/ArcGIS/rest/services/BPX_RTD_BusStops3/FeatureServer/0", {
+            id: "pnr",
+            mode: FeatureLayer.MODE_ONDEMAND,
+            infoTemplate: rtdInfoTemplate,
+            outFields: ['STOPNAME', 'ROUTES']
+        });
+        busStopLayer.renderer = busStopRenderer;
 
         var pnrLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/1", {
             id: "pnr",
@@ -35,11 +51,16 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
         });
         lightRailStationLayer.renderer = rtdLightRailStationRenderer;
 
+        var bikeRouteLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/4", {
+            id: "bikeroutelines",
+            mode: FeatureLayer.MODE_ONDEMAND
+        });
+
         var lightRailLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/5", {
             id: "lightraillines",
             mode: FeatureLayer.MODE_ONDEMAND
         });
 
-        map.addLayers([lightRailLayer, pnrLayer, lightRailStationLayer]);
+        map.addLayers([lightRailLayer, bikeRouteLayer, pnrLayer, lightRailStationLayer, busStopLayer]);
 
     });
