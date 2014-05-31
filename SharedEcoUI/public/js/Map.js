@@ -10,14 +10,22 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
             slider: true,
             sliderStyle: "small"
         });
-        var pnrRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/parknride.png', 24, 34));
-        var rtdLightRailStationRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/lightrail.png', 24, 34));
+        var pnrRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/parknride.png', 25, 36));
+        var rtdLightRailStationRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/lightrail.png', 25, 36));
+        var bCycleRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bcycle.png', 25, 36));
 
         //Set up the pop up for displaying additional information about a point
         var rtdInfoTemplate = new InfoTemplate({
             title: "${NAME}",
             content: "<b>Address:</b> ${ADDRESS}<br/>"
         });
+
+		infoTemplate = $("#info_view");
+		infoTemplate = _.template( infoTemplate.html() );
+		var bcycleInfoTemplate = new InfoTemplate({
+			title: "${STATION_NA}",
+			content: "${ADDRESS_LI}<br/>${NUM_DOCKS} Bike Docks<br/>"
+		});
 
         var pnrLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/1", {
             id: "pnr",
@@ -40,6 +48,14 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
             mode: FeatureLayer.MODE_ONDEMAND
         });
 
-        map.addLayers([lightRailLayer, pnrLayer, lightRailStationLayer]);
+		var bCycleLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/0", {
+			id: "bcyclelocations",
+			mode: FeatureLayer.MODE_ONDEMAND,
+			infoTemplate: bcycleInfoTemplate,
+			outFields: ['STATION_NA', 'ADDRESS_LI', 'CITY', 'STATE', 'ZIP', 'NUM_DOCKS']
+		});
+		bCycleLayer.renderer = bCycleRenderer;
+
+        map.addLayers([lightRailLayer, pnrLayer, lightRailStationLayer, bCycleLayer]);
 
     });
