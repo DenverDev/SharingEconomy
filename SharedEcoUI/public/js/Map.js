@@ -1,7 +1,7 @@
 var map;
 require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symbols/PictureMarkerSymbol",
-"esri/renderers/SimpleRenderer", "dojo/domReady!"],
-    function (Map, InfoTemplate, FeatureLayer, PictureMarkerSymbol, SimpleRenderer) {
+"esri/symbols/SimpleMarkerSymbol", "esri/renderers/SimpleRenderer", "dojo/domReady!"],
+    function (Map, InfoTemplate, FeatureLayer, PictureMarkerSymbol, SimpleMarkerSymbol, SimpleRenderer) {
 
         map = new Map("map", {
             basemap: "streets",
@@ -10,7 +10,8 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
             slider: true,
             sliderStyle: "small"
         });
-        var bikeRackRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bikeRack.png', 25, 36));
+
+        var bikeRackRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bikeRack.png', 26, 36));
         var busStopRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bus.png', 25, 36));
         var pnrRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/parknride.png', 25, 36));
         var rtdLightRailStationRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/lightrail.png', 25, 36));
@@ -23,7 +24,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
         });
         
         var bikeRackLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/3", {
-            id: "pnr",
+            id: "bikeracks",
             mode: FeatureLayer.MODE_ONDEMAND,
         });
         bikeRackLayer.renderer = bikeRackRenderer;
