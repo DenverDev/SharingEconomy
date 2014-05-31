@@ -18,6 +18,32 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
         var bCycleRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bcycle.png', 25, 36));
 
         //Set up the pop up for displaying additional information about a point
+		flyoutTemplate = $("#flyout_view");
+		flyoutTemplate = _.template( flyoutTemplate.html() );
+		var bcycleInfoTemplate = new InfoTemplate({
+			title: "B-Cycle ${STATION_NA}",
+			content: flyoutTemplate({
+				'street' : '${ADDRESS_LI}',
+				'city' : '${CITY}',
+				'state' : '${STATE}',
+				'zip' : '${ZIP}',
+				'docs' : '${NUM_DOCKS}',
+				'stuff' : ''
+			})
+		});
+
+		var pnrInfoTemplate = new InfoTemplate({
+			title: "B-Cycle ${STATION_NA}",
+			content: flyoutTemplate({
+				'street' : '${ADDRESS}',
+				'city' : '${CITY}',
+				'state' : 'CO',
+				'zip' : '${ZIPCODE}',
+				'docs' : '',
+				'stuff' : 'a${PID} - b${CLASS} - c${LOCAL_RT} - d${EXPRESS_RT} - e${LIMITED_RT} - f${REGIONAL_R} - g${SKYRIDE_RT} - h${LINE} - h${AUTOS} - i${RACKS} - j${LOCKERS} - k${SHELTERS}'
+			})
+		});
+
         var rtdInfoTemplate = new InfoTemplate({
             title: "${NAME}",
             content: "<b>Address:</b> ${ADDRESS}<br/>"
@@ -51,24 +77,13 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
         });
         busStopLayer.renderer = busStopRenderer;
 
-		flyoutTemplate = $("#flyout_view");
-		flyoutTemplate = _.template( flyoutTemplate.html() );
-		var bcycleInfoTemplate = new InfoTemplate({
-			title: "B-Cycle ${STATION_NA}",
-			content: flyoutTemplate({
-				'street' : '${ADDRESS_LI}',
-				'city' : '${CITY}',
-				'state' : '${STATE}',
-				'zip' : '${ZIP}',
-				'docs' : '${NUM_DOCKS}'
-			})
-		});
-
         var pnrLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/1", {
             id: "pnr",
             mode: FeatureLayer.MODE_ONDEMAND,
-            infoTemplate: rtdInfoTemplate,
-            outFields: ['NAME', 'ADDRESS']
+            infoTemplate: pnrInfoTemplate,
+            outFields: ['NAME', 'ADDRESS', 'CITY', 'ZIPCODE', 'PID', 'CLASS', 'LOCAL_RT', 'EXPRESS_RT', 'LIMITED_RT', 'REGIONAL_R', 'SKYRIDE_RT', 'LINE', 'AUTOS', 'RACKS', 'LOCKERS', 'SHELTERS']
+
+
         });
         pnrLayer.renderer = pnrRenderer;
 

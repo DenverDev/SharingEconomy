@@ -35,7 +35,11 @@
 			<span class="state"><%= state %></span>
 			<span class="zip"><%= zip %></span>
 		</div>
-		<div class="docs"><span><%= docs %></span> total bike docs</div>
+		<% if (docs){ %>
+			<div class="docs"><span><%= docs %></span> total bike docs</div>
+		<% } else if (stuff) { %>
+			<pre><%= stuff %></pre>
+		<% } %>
 	</script>
 	<script src="http://js.arcgis.com/3.9/"></script>
 
