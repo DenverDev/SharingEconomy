@@ -9,8 +9,8 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "dojo/domR
             slider: true,
             sliderStyle: "small"
         });
-        //var pnrRenderer = new SimpleRenderer(new PictureMarkerSymbol('Images/parknride.png', 24, 34));
-        //var rtdLightRailStationRenderer = new SimpleRenderer(new PictureMarkerSymbol('Images/lightrail.png', 24, 34));
+        var pnrRenderer = new SimpleRenderer(new PictureMarkerSymbol('Images/parknride.png', 24, 34));
+        var rtdLightRailStationRenderer = new SimpleRenderer(new PictureMarkerSymbol('Images/lightrail.png', 24, 34));
 
         //Set up the pop up for displaying additional information about a point
         var rtdInfoTemplate = new InfoTemplate({

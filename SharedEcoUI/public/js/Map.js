@@ -1,7 +1,7 @@
-
 var map;
-require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "dojo/domReady!"],
-    function (Map, InfoTemplate, FeatureLayer) {
+require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symbols/PictureMarkerSymbol",
+"esri/renderers/SimpleRenderer", "dojo/domReady!"],
+    function (Map, InfoTemplate, FeatureLayer, PictureMarkerSymbol, SimpleRenderer) {
 
         map = new Map("map", {
             basemap: "streets",
@@ -10,8 +10,8 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "dojo/domR
             slider: true,
             sliderStyle: "small"
         });
-        //var pnrRenderer = new SimpleRenderer(new PictureMarkerSymbol('Images/parknride.png', 24, 34));
-        //var rtdLightRailStationRenderer = new SimpleRenderer(new PictureMarkerSymbol('Images/lightrail.png', 24, 34));
+        var pnrRenderer = new SimpleRenderer(new PictureMarkerSymbol('../Images/parknride.png', 24, 34));
+        var rtdLightRailStationRenderer = new SimpleRenderer(new PictureMarkerSymbol('../Images/lightrail.png', 24, 34));
 
         //Set up the pop up for displaying additional information about a point
         var rtdInfoTemplate = new InfoTemplate({
@@ -25,7 +25,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "dojo/domR
             infoTemplate: rtdInfoTemplate,
             outFields: ['NAME', 'ADDRESS']
         });
-        //pnrLayer.renderer = pnrRenderer;
+        pnrLayer.renderer = pnrRenderer;
 
         var lightRailStationLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/SharedTransportation/FeatureServer/1", {
             id: "lightrailstations",
@@ -33,12 +33,13 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "dojo/domR
             infoTemplate: rtdInfoTemplate,
             outFields: ['NAME', 'ADDRESS']
         });
-        //lightRailStationLayer.renderer - rtdLightRailStationRenderer;
+        lightRailStationLayer.renderer = rtdLightRailStationRenderer;
 
         var lightRailLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/SharedTransportation/FeatureServer/4", {
             id: "lightraillines",
             mode: FeatureLayer.MODE_ONDEMAND
         });
 
-        map.addLayers([pnrLayer, lightRailStationLayer, lightRailLayer]);
-    })
+        map.addLayers([lightRailLayer, pnrLayer, lightRailStationLayer]);
+
+    });
