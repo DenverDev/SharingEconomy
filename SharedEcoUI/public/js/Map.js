@@ -36,11 +36,17 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
         });
         busStopLayer.renderer = busStopRenderer;
 
-		infoTemplate = $("#info_view");
-		infoTemplate = _.template( infoTemplate.html() );
+		flyoutTemplate = $("#flyout_view");
+		flyoutTemplate = _.template( flyoutTemplate.html() );
 		var bcycleInfoTemplate = new InfoTemplate({
 			title: "B-Cycle ${STATION_NA}",
-			content: "${ADDRESS_LI}<br/>${NUM_DOCKS} Bike Docks<br/>"
+			content: flyoutTemplate({
+				'street' : '${ADDRESS_LI}',
+				'city' : '${CITY}',
+				'state' : '${STATE}',
+				'zip' : '${ZIP}',
+				'docs' : '${NUM_DOCKS}'
+			})
 		});
 
         var pnrLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/1", {

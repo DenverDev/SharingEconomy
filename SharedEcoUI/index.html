@@ -28,8 +28,14 @@
     <![endif]-->
 
 <!-- Underscore JS templates -->
-	<script id="info_view" type="text/template"></>
-		<div class="test">Placeholder</div>
+	<script id="flyout_view" type="text/template"></>
+		<div class="address">
+			<span class="street"><%= street %></span>
+			<span class="city"><%= city %></span>,
+			<span class="state"><%= state %></span>
+			<span class="zip"><%= zip %></span>
+		</div>
+		<div class="docs"><span><%= docs %></span> total bike docs</div>
 	</script>
 	<script src="http://js.arcgis.com/3.9/"></script>
 

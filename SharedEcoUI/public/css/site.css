@@ -328,6 +328,15 @@ footerbar {
 	min-height: 600px;
 }
 
+.contentPane .address .street {
+	display: block;
+}
+.contentPane .docs {
+	margin-top: 10px;
+}
+.contentPane .docs span {
+	font-weight: bold;
+}
 
 <!-- ------------------ CSS by Joey ------------------>
 
