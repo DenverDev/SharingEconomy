@@ -328,6 +328,15 @@ footerbar {
 	min-height: 600px;
 }
 
+.contentPane .address .street {
+	display: block;
+}
+.contentPane .docs {
+	margin-top: 10px;
+}
+.contentPane .docs span {
+	font-weight: bold;
+}
 
 <!-- ------------------ CSS by Joey ------------------>
 
@@ -341,6 +350,9 @@ body {
   height: 100%;
   width: 100%;
   font-family:'Lato',Arial,sans-serif;
+  background-image:url('http://www.denvergov.org/Portals/_default/Skins/DenverGov/images/middlebanneragency.jpg') !important no-repeat;
+  background-size: 100%;
+  background-color:transparent !important;
 }
 
 /* fix bs3 horizontal scrollbar bug */
@@ -603,15 +615,15 @@ margin-top: 80px;
 
 .mapui .nav>li>a:hover, .nav>li>a:focus {
 text-decoration: none;
-background-color: #001c31;
+background-color: #003366;
 }
 
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
-background-color: #001c31;
+background-color: #003366;
 }
 
 .mapui .nav .open>a, .nav .open>a:hover, .nav .open>a:focus {
-background-color: #001c31;
+background-color: #003366;
 }
 
 .mapui .nav {
@@ -629,12 +641,12 @@ margin-top: 0px;
           border-radius: 0 !important;
 }
 
-/*.mapui .col-md-3, .mapui .col-md-9 {
+.mapui .col-md-3, .mapui .col-md-9 {
 position: relative;
 min-height: 1px;
 padding-left: 0px;
 padding-right: 0px;
-}*/
+}
 
 .mapui li {
 	padding:0px;
