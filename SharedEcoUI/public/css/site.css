@@ -323,3 +323,7 @@ footerbar {
  border: none;
 }
  
+
+#map {
+	min-height: 600px;
+}
