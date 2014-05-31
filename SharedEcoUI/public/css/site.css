@@ -350,9 +350,6 @@ body {
   height: 100%;
   width: 100%;
   font-family:'Lato',Arial,sans-serif;
-  background-image:url('http://www.denvergov.org/Portals/_default/Skins/DenverGov/images/middlebanneragency.jpg') !important no-repeat;
-  background-size: 100%;
-  background-color:transparent !important;
 }
 
 /* fix bs3 horizontal scrollbar bug */
@@ -653,3 +650,10 @@ padding-right: 0px;
 	font-family:'Lato',Arial,sans-serif;
 	font-weight:300;
 }
+
+body {
+	background: url(http://www.denvergov.org/Portals/_default/Skins/DenverGov/images/middlebanneragency.jpg) top repeat-x #e4e4e4!important;
+  /*background-image: url(http://www.denvergov.org/Portals/_default/Skins/DenverGov/images/middlebanneragency.jpg);
+  background-repeat:no-repeat;
+  background-size:100% auto;
+  background-color:transparent !important;*/}
