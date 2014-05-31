@@ -28,7 +28,7 @@
     <![endif]-->
 
 <!-- Underscore JS templates -->
-	<script id="flyout_view" type="text/template"></>
+	<script id="info_view" type="text/template"></>
 		<div class="test">Placeholder</div>
 	</script>
 	<script src="http://js.arcgis.com/3.9/"></script>
@@ -41,7 +41,7 @@
 	<div class="navbar navbar-default" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a class="navbar-brand" href="#">The Shared Economy: Transportation</a> 
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a class="navbar-brand" href="#">The Sharing Economy: Transportation</a> 
 			</div>
 			<div class="navbar-collapse collapse">
 				<!--<ul class="nav navbar-nav">
@@ -76,14 +76,13 @@
 	<div id="mapDiv" class="jumbotron">
         <div class="row mapui">
         	<div class="col-md-3">
-            	<h2>Map Nav</h2>
-                <!--  
+               
       		<ul class="nav nav-pills nav-stacked" style="max-width: 300px;">
-      			<li class="active"><a href="#">Home</a></li>
+      			<li class="active"><a href="#Bicycling">Bicycling</a></li>
       			<li>
-      				<a href="#">Profile</a></li>
+      				<a href="#carshare">Car Share</a></li>
       			<li>
-      				<a href="#">Messages</a></li>
+      				<a href="#public">Public</a></li>
       			<li class="dropdown">
       				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Dropdown <span class="caret"></span></a>
     				<ul class="dropdown-menu">
@@ -91,11 +90,11 @@
             			<li>Item 2</li>
     				</ul>
   	  			</li>
-    		</ul>-->
+    		</ul>
+            
             </div>
             
             <div class="col-md-9">
-            	<h2>Map Div</h2>
                 <div id="map" class=""></div>
             </div>
         </div>
@@ -112,5 +111,18 @@
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
 
 <script type="text/javascript" src="public/js/Map.js"></script>
+<script type="text/javascript">
+			
+			$(document).ready(function() {
+				
+				$(".nav li").on("click", function(e) {
+      				$(".nav li").removeClass("active");
+					$(e.target).parent().addClass("active");
+					    			});
+		
+			});
+    
+
+			</script>
 </body>
 </html>
