@@ -193,7 +193,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 		neighborhoodLabelLayer.addFeatureLayer(neighborhoodLayer, neighborhoodLabelRenderer, "${NBHD_NAME}");
 		neighborhoodLabelLayer.minScale = "40000";
 
-		map.addLayers([neighborhoodLayer, councilLayer, busRouteLayer, lightRailLayer, bikeRouteLayer, pnrLayer,
-            neighborhoodLabelLayer, councilLabelLayer, lightRailStationLayer, busStopLayer, bikeRackLayer, bCycleLayer]);
+		map.addLayers([neighborhoodLayer, councilLayer, busRouteLayer, lightRailLayer, bikeRouteLayer, neighborhoodLabelLayer,
+            councilLabelLayer, lightRailStationLayer, pnrLayer, busStopLayer, bikeRackLayer, bCycleLayer]);
 
     });
