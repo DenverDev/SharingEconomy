@@ -352,7 +352,9 @@ footerbar {
 .esriPopup .titleButton.maximize {
 	display: none;
 }
-
+.esriPopup .panel .panel-body div {
+	padding: 10px;
+}
 
 #map_graphics_layer {
 	display: none !important;
