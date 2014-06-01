@@ -108,7 +108,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 		});
 
 		var selectionSymbol = new SimpleLineSymbol().setColor(new Color("#000080"));
-		var featureLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/RTDBusRoutes500k/FeatureServer/0", {
+		featureLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/RTDBusRoutes500k/FeatureServer/0", {
 		    id: "filterBusRoutes",
 		    outFields: ['ROUTE']
 		});
@@ -267,15 +267,63 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 
 $(document).ready(function() {
 
-	$('#collapseOne, #collapseTwo, #collapseThree').on('shown.bs.collapse', function () {
+	$('#collapseOne, #collapseThree').on('shown.bs.collapse', function () {
+
+		var className = $(this).attr('id');
+
+		if(className === 'collapseOne') {
+			if (map.getZoom() < 14) {
+				map.setZoom(14);
+			}
+		}
+
+		$(this).parent().find('.' + className).addClass('active');
+		$(this).addClass('active');
 		$(this).find('li').addClass('active');
 	})
-	$('#collapseOne li, #collapseTwo li, #collapseThree li').on('click', function () {
-
-console.log($(this));
-
-	})
-
+	$('#collapseOne li, #collapseThree li').on('click', function () {
+		var layerType = $(this).attr('id');
+		
+		// feels backwards because the change from active to inactive hasn't finished at this point
+		if($(this).hasClass("active")) {
+			map.infoWindow.hide();
+			
+			if (layerType === 'bus') {
+				busRouteLayer.setVisibility(false);
+				busStopLayer.setVisibility(false);
+				pnrLayer.setVisibility(false);
+				featureLayer.setVisibility(false);
+			} else if (layerType === 'lightrail') {
+				lightRailLayer.setVisibility(false);
+				lightRailStationLayer.setVisibility(false);
+			} else if (layerType === 'bcycle') {
+				bCycleLayer.setVisibility(false);
+			} else if (layerType === 'routes') {
+				bikeRouteLayer.setVisibility(false);
+				bikeRackLayer.setVisibility(false);
+			}
+		} else {
+			if (layerType === 'bus') {
+				busRouteLayer.setVisibility(true);
+				busStopLayer.setVisibility(true);
+				pnrLayer.setVisibility(true);
+			} else if (layerType === 'lightrail') {
+				lightRailLayer.setVisibility(true);
+				lightRailStationLayer.setVisibility(true);
+			} else if (layerType === 'bcycle') {
+				bCycleLayer.setVisibility(true);
+				if (map.getZoom() < 14) {
+					map.setZoom(14);
+				}
+			} else if (layerType === 'routes') {
+				bikeRouteLayer.setVisibility(true);
+				bikeRackLayer.setVisibility(true);
+				if (map.getZoom() < 14) {
+					map.setZoom(14);
+				}
+			}
+		}
+	});
 });
 $(window).load(function() {
 	$('#collapseThree').collapse('show');
