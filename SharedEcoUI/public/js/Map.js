@@ -117,6 +117,16 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
 		});
 		bCycleLayer.renderer = bCycleRenderer;
 
-        map.addLayers([lightRailLayer, bikeRouteLayer, pnrLayer, lightRailStationLayer, busStopLayer, bikeRackLayer, bCycleLayer]);
+		var councilLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/6", {
+		    id: "councildistricts",
+		    mode: FeatureLayer.MODE_ONDEMAND,
+		});
+
+		var neighborhoodLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/8", {
+		    id: "neighborhoods",
+		    mode: FeatureLayer.MODE_ONDEMAND,
+		});
+
+        map.addLayers([neighborhoodLayer, councilLayer, lightRailLayer, bikeRouteLayer, pnrLayer, lightRailStationLayer, busStopLayer, bikeRackLayer, bCycleLayer]);
 
     });
