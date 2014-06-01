@@ -645,7 +645,7 @@ background-color: #003366;
 
 .nav-pills>li.active>a{
 	background-image:url('../images/active.png');
-	background-position:95% 5px;
+	background-position:95% 10px;
 	background-repeat:no-repeat;	
 }
 
