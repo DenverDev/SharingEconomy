@@ -100,7 +100,7 @@
 						<% if (routes.routes && routes.routes !== ' '){ %>
 							<div class="block"><span>Bus Routes</span><%= routes.routes %></div>
 						<% } %>
-						<div id="busRoutes"><a href="javascript: rtdInfoTemplate.getBusRoutes($(this));" data-target='<%= routes.queryString %>'>Display Routes on Map</a></div>
+						<div id="busRoutes"><a href="javascript: rtdInfoTemplate.getBusRoutes();" data-target='<%= routes.queryString %>'>Display Routes on Map</a></div>
 					</div>
 				</div>
 			</div>
@@ -170,8 +170,7 @@
             
    				<div id="panelhead">
                 	<ul class="nav nav-pills nav-stacked">
-         			<li	data-toggle="collapse" 
-             			data-target="#collapseOne">
+         			<li id="bicycling" data-toggle="collapse" data-target="#collapseOne">
              			<a href="#">Bicycling</a>
          			</li>
                     </ul>
@@ -180,13 +179,13 @@
     			<div id="collapseOne" class="panel-collapse collapse">
         			<div class="panel-body">
         				<ul class="nav nav-pills nav-stacked">
-      						<li id="bcycle">
+      						<li id="bcycle" class="active">
       				<a href="#">B Cycle</a>
                 			</li>
-      						<li id="trails">
+      						<li id="trails" class="active">
       				<a href="#">Trails</a>
                 			</li>
-      						<li id="path">
+      						<li id="path" class="active">
       				<a href="#">Path</a>
   	  						</li>
     					</ul>
@@ -194,7 +193,7 @@
                 </div>
     
     			<ul class="nav nav-pills nav-stacked">
-         			<li	data-toggle="collapse" 
+         			<li id="carshare"	data-toggle="collapse" 
              			data-target="#collapseTwo">
              			<a href="#">Car Share</a>
          			</li>
@@ -213,7 +212,7 @@
                 </div> 
 
 				<ul class="nav nav-pills nav-stacked">
-         			<li	data-toggle="collapse" 
+         			<li id="public"	data-toggle="collapse" 
              			data-target="#collapseThree">
             			<a href="#">Public</a>
          			</li>

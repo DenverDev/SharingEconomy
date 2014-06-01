@@ -62,7 +62,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 			queryString = queryString.replace(/-/g, '#');
 			queryString = queryString.replace(/#/g, '","');
 			queryString = '"' + queryString + '"';
-			queryString = queryString.replace(/,""/g, '');
+			queryString = queryString.replace(/,\"\"/g, '');
 			
 			rtdInfoTemplate.queryString = queryString;
 
@@ -91,13 +91,17 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 			
 		});
 		rtdInfoTemplate.getBusRoutes = function () {
-		    console.log(rtdInfoTemplate.queryString);
-		    var query = new Query();
-		    query.outFields = "ROUTE";
-		    query.where = "ROUTE IN (" + rtdInfoTemplate.queryString + ")";
-		    console.log(query.where);
-		    query.returnGeometry = true;
-            busRouteLayer.selectFeatures(query, FeatureLayer.SELECTION_NEW);
+			console.log(rtdInfoTemplate.queryString);
+			var queryString = rtdInfoTemplate.queryString.replace(/\"/g, '\'');
+			console.log(queryString);
+			
+			
+			var query = new Query();
+			query.outFields = "ROUTE";
+			query.where = "ROUTE IN (" + queryString + ")";
+			console.log(query.where);
+			query.returnGeometry = true;
+			busRouteLayer.selectFeatures(query, FeatureLayer.SELECTION_NEW);
 		}
 
 
