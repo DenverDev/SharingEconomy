@@ -3,6 +3,8 @@ SharingEconomy
 
 A repository for Hack4Colorado for the Sharing Economy: Transportation project
 
+Release 1.0 - 6/01/2014
+
 "Providing an interactive map to find shared transportation services in the Denver metro area."
 
 Questions:
