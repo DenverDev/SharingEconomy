@@ -656,6 +656,12 @@ background-color: #003366;
 	background-repeat:no-repeat;	
 }
 
+/*.arcgisGeocoder .esriGeocoderContainer {
+width: 100% !important;
+}*/
+
+.btn {
+white-space: normal !important;}
 	
 .nav-pills>li.active {
 font-weight:600;
