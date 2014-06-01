@@ -1,10 +1,10 @@
 var map;
 require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/layers/LabelLayer", "esri/symbols/PictureMarkerSymbol",
 "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/TextSymbol", "esri/symbols/SimpleLineSymbol",
-"esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dojo/_base/Color",
+"esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dojo/_base/Color", "esri/dijit/Geocoder",
 "esri/tasks/query", "dijit/popup", "dojo/domReady!"],
     function (Map, InfoTemplate, FeatureLayer, LabelLayer, PictureMarkerSymbol, Font, SimpleMarkerSymbol, TextSymbol, SimpleLineSymbol,
-        SimpleRenderer, TooltipDialog, Color, Query, dijitPopup) {
+        SimpleRenderer, TooltipDialog, Color, Geocoder, Query, dijitPopup) {
 
         map = new Map("map", {
             basemap: "streets",
@@ -13,6 +13,17 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
             slider: true,
             sliderStyle: "small"
         });
+
+        //geocoder = new Geocoder({
+        //    map: map,
+        //    autoComplete: true,
+        //    arcgisGeocoder: true,
+        //    minCharacters: 3,
+        //    maxLocations: 3,
+        //    theme: "arcgisGeocoder"
+        //}, "search");
+
+        //geocoder.startup();
 
         var bikeRackRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bikeRack.png', 26, 36));
         var busStopRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bus.png', 25, 36));
