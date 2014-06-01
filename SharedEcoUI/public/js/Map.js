@@ -1,7 +1,8 @@
 var map;
-require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symbols/PictureMarkerSymbol",
-"esri/symbols/SimpleMarkerSymbol", "esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dijit/popup", "dojo/domReady!"],
-    function (Map, InfoTemplate, FeatureLayer, PictureMarkerSymbol, SimpleMarkerSymbol, SimpleRenderer, TooltipDialog, dijitPopup) {
+require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/layers/LabelLayer", "esri/symbols/PictureMarkerSymbol",
+"esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/TextSymbol", "esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dojo/_base/Color",
+"dijit/popup", "dojo/domReady!"],
+    function (Map, InfoTemplate, FeatureLayer, LabelLayer, PictureMarkerSymbol, Font, SimpleMarkerSymbol, TextSymbol, SimpleRenderer, TooltipDialog, Color, dijitPopup) {
 
         map = new Map("map", {
             basemap: "streets",
@@ -88,12 +89,13 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
         });
 
         var busStopLayer = new FeatureLayer("http://services.arcgis.com/IZtlGBUe4KTzLOl4/ArcGIS/rest/services/BPX_RTD_BusStops3/FeatureServer/0", {
-            id: "pnr",
+            id: "busStops",
             mode: FeatureLayer.MODE_ONDEMAND,
             infoTemplate: rtdInfoTemplate,
             outFields: ['STOPNAME', 'ROUTES']
         });
         busStopLayer.renderer = busStopRenderer;
+        busStopLayer.minScale = "40000";
 
         var pnrLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/1", {
             id: "pnr",
@@ -131,16 +133,40 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
 		});
 		bCycleLayer.renderer = bCycleRenderer;
 
-		var councilLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/6", {
-		    id: "councildistricts",
-		    mode: FeatureLayer.MODE_ONDEMAND,
-		});
+        var councilLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/6", {
+            id: "councildistricts",
+            mode: FeatureLayer.MODE_ONDEMAND,
+            outFields: ['DIST_REP']
+        });
+
+        var councilLabelLayer = new LabelLayer();
+        var color = new Color("#666");
+        var font = new Font("12pt", Font.STYLE_NORMAL, Font.VARIANT_NORMAL, Font.WEIGHT_BOLD, "Arial");
+        var textSymbol = new TextSymbol();
+        textSymbol.setFont(font);
+        textSymbol.setColor(color);
+        var councilLabelRenderer = new SimpleRenderer(textSymbol);
+        councilLabelLayer.addFeatureLayer(councilLayer, councilLabelRenderer, "${DIST_REP}");
+        councilLabelLayer.minScale = "100000";
+        councilLabelLayer.maxScale = "40000"
 
 		var neighborhoodLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/8", {
 		    id: "neighborhoods",
 		    mode: FeatureLayer.MODE_ONDEMAND,
+		    outFields: ['NBHD_NAME']
 		});
 
-        map.addLayers([neighborhoodLayer, councilLayer, lightRailLayer, bikeRouteLayer, pnrLayer, lightRailStationLayer, busStopLayer, bikeRackLayer, bCycleLayer]);
+		var neighborhoodLabelLayer = new LabelLayer();
+		var color = new Color("#333");
+		var font = new Font("12pt", Font.STYLE_NORMAL, Font.VARIANT_NORMAL, Font.WEIGHT_BOLD,"Arial");
+		var textSymbol = new TextSymbol();
+		textSymbol.setFont(font);
+		textSymbol.setColor(color);
+		var neighborhoodLabelRenderer = new SimpleRenderer(textSymbol);
+		neighborhoodLabelLayer.addFeatureLayer(neighborhoodLayer, neighborhoodLabelRenderer, "${NBHD_NAME}");
+		neighborhoodLabelLayer.minScale = "40000";
+
+		map.addLayers([neighborhoodLayer, councilLayer, lightRailLayer, bikeRouteLayer, pnrLayer,
+            neighborhoodLabelLayer, councilLabelLayer, lightRailStationLayer, busStopLayer, bikeRackLayer, bCycleLayer]);
 
     });
