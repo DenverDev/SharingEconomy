@@ -18,19 +18,22 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
         var rtdLightRailStationRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/lightrail.png', 25, 36));
         var bCycleRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bcycle.png', 25, 36));
 
-        //Set up the pop up for displaying additional information about a point
+		//Set up the pop up for displaying additional information about a point
 		bcycleTemplate = $("#bcycle_view");
 		bcycleTemplate = _.template( bcycleTemplate.html() );
-		var bcycleInfoTemplate = new InfoTemplate({
-			title: "B-Cycle ${STATION_NA}",
-			content: bcycleTemplate({
-				'street' : '${ADDRESS_LI}',
-				'city' : '${CITY}',
-				'state' : '${STATE}',
-				'zip' : '${ZIP}',
-				'docs' : '${NUM_DOCKS}',
-			})
-		});
+		var bcycleInfoTemplate = new InfoTemplate();
+		bcycleData = function(graphic) {
+			bcycleObj = {
+				'street' : graphic.attributes.ADDRESS_LI,
+				'city' : graphic.attributes.CITY,
+				'state' : graphic.attributes.STATE,
+				'zip' : graphic.attributes.ZIP,
+				'docs' : graphic.attributes.NUM_DOCKS
+			};
+			return bcycleTemplate(bcycleObj);
+		};
+		bcycleInfoTemplate.setTitle('B-Cycle ${STATION_NA}');
+		bcycleInfoTemplate.setContent(bcycleData);
 
 		pnrTemplate = $('#pnr_view');
 		pnrTemplate = _.template( pnrTemplate.html() );
