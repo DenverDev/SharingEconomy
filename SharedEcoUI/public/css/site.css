@@ -605,7 +605,7 @@ margin-top: 80px;
 
 
 
-.panel-heading:hover, .panel-heading:focus {text-decoration: none;
+.panel-heading h4:hover, .panel-heading h4:focus {text-decoration: none;
 background-color: #003366;}
 
 <!-- panel -->
