@@ -1,8 +1,8 @@
 var map;
 require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/layers/LabelLayer", "esri/symbols/PictureMarkerSymbol",
-"esri/symbols/SimpleMarkerSymbol", "esri/symbols/TextSymbol", "esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dojo/_base/Color",
+"esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/TextSymbol", "esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dojo/_base/Color",
 "dijit/popup", "dojo/domReady!"],
-    function (Map, InfoTemplate, FeatureLayer, LabelLayer, PictureMarkerSymbol, SimpleMarkerSymbol, TextSymbol, SimpleRenderer, TooltipDialog, Color, dijitPopup) {
+    function (Map, InfoTemplate, FeatureLayer, LabelLayer, PictureMarkerSymbol, Font, SimpleMarkerSymbol, TextSymbol, SimpleRenderer, TooltipDialog, Color, dijitPopup) {
 
         map = new Map("map", {
             basemap: "streets",
@@ -137,7 +137,11 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 
         var councilLabelLayer = new LabelLayer();
         var color = new Color("#666");
-        var councilLabelRenderer = new SimpleRenderer(new TextSymbol().setColor(color));
+        var font = new Font("12pt", Font.STYLE_NORMAL, Font.VARIANT_NORMAL, Font.WEIGHT_BOLD, "Arial");
+        var textSymbol = new TextSymbol();
+        textSymbol.setFont(font);
+        textSymbol.setColor(color);
+        var councilLabelRenderer = new SimpleRenderer(textSymbol);
         councilLabelLayer.addFeatureLayer(councilLayer, councilLabelRenderer, "${DIST_REP}");
         councilLabelLayer.minScale = "100000";
         councilLabelLayer.maxScale = "40000"
@@ -149,8 +153,12 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 		});
 
 		var neighborhoodLabelLayer = new LabelLayer();
-		var color = new Color("#000");
-		var neighborhoodLabelRenderer = new SimpleRenderer(new TextSymbol().setColor(color));
+		var color = new Color("#333");
+		var font = new Font("12pt", Font.STYLE_NORMAL, Font.VARIANT_NORMAL, Font.WEIGHT_BOLD,"Arial");
+		var textSymbol = new TextSymbol();
+		textSymbol.setFont(font);
+		textSymbol.setColor(color);
+		var neighborhoodLabelRenderer = new SimpleRenderer(textSymbol);
 		neighborhoodLabelLayer.addFeatureLayer(neighborhoodLayer, neighborhoodLabelRenderer, "${NBHD_NAME}");
 		neighborhoodLabelLayer.minScale = "40000";
 
