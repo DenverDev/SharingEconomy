@@ -163,7 +163,7 @@
     		</ul>
             
             
-            <div class="panel panel-default">
+ <div class="panel panel-default">
    <div class="panel-heading">
          <h4 class="panel-title"
              data-toggle="collapse" 
@@ -179,7 +179,7 @@
          <h4 class="panel-title"
              data-toggle="collapse" 
              data-target="#collapseOneA">
-             B-Cycle Station
+             B-Cycle Stations
          </h4>
     </div>
     <div id="collapseOneA" 
@@ -223,7 +223,22 @@
     </div>
     <div id="collapseTwo" 
          class="panel-collapse collapse">
+        <div class="panel-body">
+        
+        <div class="panel-heading">
+         <h4 class="panel-title"
+             data-toggle="collapse" 
+             data-target="#collapseTwoA">
+             Car2Go
+         </h4>
+    </div>
+    
+    <div id="collapseTwoA" 
+         class="panel-collapse collapse">
         <div class="panel-body"></div>
+    </div>
+        
+        </div>
     </div>
     
     <div class="panel-heading">
@@ -238,7 +253,6 @@
         <div class="panel-body"></div>
     </div>
 </div>
-
 
             
             </div>
@@ -259,6 +273,9 @@
 <script type="text/javascript" src="public/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
 
+<script src="public/js/cartogo.js"></script>
+
+
 <script type="text/javascript" src="public/js/Map.js"></script>
 <script type="text/javascript">
 			
@@ -270,6 +287,11 @@
 					    			});
 		
 			});
+			
+			$('#collapseTwoA').on('show.bs.collapse', function () {
+  				getCarToGo('Denver','');
+				getLyft('Denver','');
+			})
     
 
 			</script>
