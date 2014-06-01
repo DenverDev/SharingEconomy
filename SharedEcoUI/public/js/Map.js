@@ -1,7 +1,8 @@
 var map;
-require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symbols/PictureMarkerSymbol",
-"esri/symbols/SimpleMarkerSymbol", "esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dijit/popup", "dojo/domReady!"],
-    function (Map, InfoTemplate, FeatureLayer, PictureMarkerSymbol, SimpleMarkerSymbol, SimpleRenderer, TooltipDialog, dijitPopup) {
+require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/layers/LabelLayer", "esri/symbols/PictureMarkerSymbol",
+"esri/symbols/SimpleMarkerSymbol", "esri/symbols/TextSymbol", "esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dojo/_base/Color",
+"dijit/popup", "dojo/domReady!"],
+    function (Map, InfoTemplate, FeatureLayer, LabelLayer, PictureMarkerSymbol, SimpleMarkerSymbol, TextSymbol, SimpleRenderer, TooltipDialog, Color, dijitPopup) {
 
         map = new Map("map", {
             basemap: "streets",
@@ -18,42 +19,42 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
         var bCycleRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bcycle.png', 25, 36));
 
         //Set up the pop up for displaying additional information about a point
-		bcycleTemplate = $("#bcycle_view");
-		bcycleTemplate = _.template( bcycleTemplate.html() );
-		var bcycleInfoTemplate = new InfoTemplate({
-			title: "B-Cycle ${STATION_NA}",
-			content: bcycleTemplate({
-				'street' : '${ADDRESS_LI}',
-				'city' : '${CITY}',
-				'state' : '${STATE}',
-				'zip' : '${ZIP}',
-				'docs' : '${NUM_DOCKS}',
-			})
-		});
+        bcycleTemplate = $("#bcycle_view");
+        bcycleTemplate = _.template( bcycleTemplate.html() );
+        var bcycleInfoTemplate = new InfoTemplate({
+            title: "B-Cycle ${STATION_NA}",
+            content: bcycleTemplate({
+                'street' : '${ADDRESS_LI}',
+                'city' : '${CITY}',
+                'state' : '${STATE}',
+                'zip' : '${ZIP}',
+                'docs' : '${NUM_DOCKS}',
+            })
+        });
 
-		pnrTemplate = $("#pnr_view");
-		pnrTemplate = _.template( pnrTemplate.html() );
-		var pnrInfoTemplate = new InfoTemplate({
-			title: "PNR ${NAME}",
-			content: pnrTemplate({
-				'street' : '${ADDRESS}',
-				'city' : '${CITY}',
-				'state' : 'CO',
-				'zip' : '${ZIPCODE}',
-				'routes' : {
-					'local' : '${LOCAL_RT}',
-					'express' : '${EXPRESS_RT}',
-					'limited' : '${LIMITED_RT}',
-					'regional' : '${REGIONAL_R}',
-					'skyride' : '${SKYRIDE_RT}',
-					'lightrail' : '${LINE}'
-				},
-				'parking' : '${AUTOS}',
-				'racks' : '${RACKS}',
-				'lockers' : '${LOCKERS}',
-				'shelters' : '${SHELTERS}'
-			})
-		});
+        pnrTemplate = $("#pnr_view");
+        pnrTemplate = _.template( pnrTemplate.html() );
+        var pnrInfoTemplate = new InfoTemplate({
+            title: "PNR ${NAME}",
+            content: pnrTemplate({
+                'street' : '${ADDRESS}',
+                'city' : '${CITY}',
+                'state' : 'CO',
+                'zip' : '${ZIPCODE}',
+                'routes' : {
+                    'local' : '${LOCAL_RT}',
+                    'express' : '${EXPRESS_RT}',
+                    'limited' : '${LIMITED_RT}',
+                    'regional' : '${REGIONAL_R}',
+                    'skyride' : '${SKYRIDE_RT}',
+                    'lightrail' : '${LINE}'
+                },
+                'parking' : '${AUTOS}',
+                'racks' : '${RACKS}',
+                'lockers' : '${LOCKERS}',
+                'shelters' : '${SHELTERS}'
+            })
+        });
 
         var rtdInfoTemplate = new InfoTemplate({
             title: "${NAME}",
@@ -120,24 +121,39 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
             mode: FeatureLayer.MODE_ONDEMAND
         });
 
-		var bCycleLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/0", {
-			id: "bcyclelocations",
-			mode: FeatureLayer.MODE_ONDEMAND,
-			infoTemplate: bcycleInfoTemplate,
-			outFields: ['STATION_NA', 'ADDRESS_LI', 'CITY', 'STATE', 'ZIP', 'NUM_DOCKS']
-		});
-		bCycleLayer.renderer = bCycleRenderer;
+        var bCycleLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/0", {
+            id: "bcyclelocations",
+            mode: FeatureLayer.MODE_ONDEMAND,
+            infoTemplate: bcycleInfoTemplate,
+            outFields: ['STATION_NA', 'ADDRESS_LI', 'CITY', 'STATE', 'ZIP', 'NUM_DOCKS']
+        });
+        bCycleLayer.renderer = bCycleRenderer;
 
-		var councilLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/6", {
-		    id: "councildistricts",
-		    mode: FeatureLayer.MODE_ONDEMAND,
-		});
+        var councilLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/6", {
+            id: "councildistricts",
+            mode: FeatureLayer.MODE_ONDEMAND,
+            outFields: ['DIST_REP']
+        });
+
+        var councilLabelLayer = new LabelLayer();
+        var color = new Color("#666");
+        var councilLabelRenderer = new SimpleRenderer(new TextSymbol().setColor(color));
+        councilLabelLayer.addFeatureLayer(councilLayer, councilLabelRenderer, "${DIST_REP}");
+        councilLabelLayer.minScale = "100000";
 
 		var neighborhoodLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/8", {
 		    id: "neighborhoods",
 		    mode: FeatureLayer.MODE_ONDEMAND,
+		    outFields: ['NBHD_NAME']
 		});
 
-        map.addLayers([neighborhoodLayer, councilLayer, lightRailLayer, bikeRouteLayer, pnrLayer, lightRailStationLayer, busStopLayer, bikeRackLayer, bCycleLayer]);
+		var neighborhoodLabelLayer = new LabelLayer();
+		var color = new Color("#000");
+		var neighborhoodLabelRenderer = new SimpleRenderer(new TextSymbol().setColor(color));
+		neighborhoodLabelLayer.addFeatureLayer(neighborhoodLayer, neighborhoodLabelRenderer, "${NBHD_NAME}");
+		neighborhoodLabelLayer.minScale = "40000";
+
+		map.addLayers([neighborhoodLayer, councilLayer, lightRailLayer, bikeRouteLayer, pnrLayer,
+            neighborhoodLabelLayer, councilLabelLayer, lightRailStationLayer, busStopLayer, bikeRackLayer, bCycleLayer]);
 
     });
