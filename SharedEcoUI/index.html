@@ -100,7 +100,7 @@
 						<% if (routes.routes && routes.routes !== ' '){ %>
 							<div class="block"><span>Bus Routes</span><%= routes.routes %></div>
 						<% } %>
-						<div id="busRoutes"><a href="javascript: void(1)" data-target="">Display Routes on Map</a></div>
+						<div id="busRoutes"><a href="javascript: rtdInfoTemplate.getBusRoutes($(this));" data-target='<%= routes.queryString %>'>Display Routes on Map</a></div>
 					</div>
 				</div>
 			</div>

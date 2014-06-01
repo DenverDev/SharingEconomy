@@ -38,7 +38,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 
 		rtdTemplate = $('#pnr_view');
 		rtdTemplate = _.template( rtdTemplate.html() );
-		var rtdInfoTemplate = new InfoTemplate();
+		rtdInfoTemplate = new InfoTemplate();
 		rtdInfoTemplate.setTitle(function(graphic){
 			if (graphic.attributes.CLASS) {
 				var locName = graphic.attributes.CLASS
@@ -50,6 +50,22 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 			return locName + ' ' + (graphic.attributes.NAME ? graphic.attributes.NAME : graphic.attributes.STOPNAME);
 		});
 		rtdInfoTemplate.setContent(function(graphic) {
+			var queryString = '';
+			if (graphic.attributes.LOCAL_RT && graphic.attributes.LOCAL_RT !== ' ') queryString += graphic.attributes.LOCAL_RT + '-';
+			if (graphic.attributes.EXPRESS_RT && graphic.attributes.EXPRESS_RT !== ' ') queryString += graphic.attributes.EXPRESS_RT + '-';
+			if (graphic.attributes.LIMITED_RT && graphic.attributes.LIMITED_RT !== ' ') queryString += graphic.attributes.LIMITED_RT + '-';
+			if (graphic.attributes.REGIONAL_R && graphic.attributes.REGIONAL_R !== ' ') queryString += graphic.attributes.REGIONAL_R + '-';
+			if (graphic.attributes.SKYRIDE_RT && graphic.attributes.SKYRIDE_RT !== ' ') queryString += graphic.attributes.SKYRIDE_RT + '-';
+			if (graphic.attributes.ROUTES && graphic.attributes.ROUTES !== ' ') queryString += graphic.attributes.ROUTES;
+			
+			queryString = queryString.replace(/, /g, '-');
+			queryString = queryString.replace(/-/g, '#');
+			queryString = queryString.replace(/#/g, '","');
+			queryString = '"' + queryString + '"';
+			queryString = queryString.replace(/,""/g, '');
+			
+			rtdInfoTemplate.queryString = queryString;
+
 			pnrObj = {
 				'street' : (graphic.attributes.ADDRESS ? graphic.attributes.ADDRESS : graphic.attributes.STOPNAME),
 				'city' : graphic.attributes.CITY,
@@ -62,15 +78,23 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 					'regional' : graphic.attributes.REGIONAL_R,
 					'skyride' : graphic.attributes.SKYRIDE_RT,
 					'lightrail' : graphic.attributes.LINE,
-					'routes' : graphic.attributes.ROUTES
+					'routes' : graphic.attributes.ROUTES,
+					'queryString' : queryString
 				},
 				'parking' : graphic.attributes.AUTOS,
 				'racks' : graphic.attributes.RACKS,
 				'lockers' : graphic.attributes.LOCKERS,
 				'shelters' : graphic.attributes.SHELTERS
 			};
+			
 			return rtdTemplate(pnrObj);
+			
 		});
+		rtdInfoTemplate.getBusRoutes = function () {
+			console.log(rtdInfoTemplate.queryString);
+		}
+
+
 
         //Set up the tooltip for hovering over points
         var dialog = new TooltipDialog({
@@ -195,5 +219,6 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 
 		map.addLayers([neighborhoodLayer, councilLayer, busRouteLayer, lightRailLayer, bikeRouteLayer, neighborhoodLabelLayer,
             councilLabelLayer, lightRailStationLayer, pnrLayer, busStopLayer, bikeRackLayer, bCycleLayer]);
+
 
     });
