@@ -263,3 +263,21 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 
 
     });
+
+
+
+$(document).ready(function() {
+
+	$('#collapseOne, #collapseTwo, #collapseThree').on('shown.bs.collapse', function () {
+		$(this).find('li').addClass('active');
+	})
+	$('#collapseOne li, #collapseTwo li, #collapseThree li').on('click', function () {
+
+console.log($(this));
+
+	})
+
+});
+$(window).load(function() {
+	$('#collapseThree').collapse('show');
+});
