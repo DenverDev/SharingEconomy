@@ -1,8 +1,10 @@
 var map;
 require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/layers/LabelLayer", "esri/symbols/PictureMarkerSymbol",
-"esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/TextSymbol", "esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dojo/_base/Color",
-"dijit/popup", "dojo/domReady!"],
-    function (Map, InfoTemplate, FeatureLayer, LabelLayer, PictureMarkerSymbol, Font, SimpleMarkerSymbol, TextSymbol, SimpleRenderer, TooltipDialog, Color, dijitPopup) {
+"esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/TextSymbol", "esri/symbols/SimpleLineSymbol",
+"esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dojo/_base/Color",
+"esri/tasks/query", "dijit/popup", "dojo/domReady!"],
+    function (Map, InfoTemplate, FeatureLayer, LabelLayer, PictureMarkerSymbol, Font, SimpleMarkerSymbol, TextSymbol, SimpleLineSymbol,
+        SimpleRenderer, TooltipDialog, Color, Query, dijitPopup) {
 
         map = new Map("map", {
             basemap: "streets",
@@ -117,11 +119,31 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
             outFields: ['NAME', 'ADDRESS']
         });
         lightRailStationLayer.renderer = rtdLightRailStationRenderer;
-
+        
         bikeRouteLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/4", {
             id: "bikeroutelines",
             mode: FeatureLayer.MODE_ONDEMAND
         });
+
+        busRouteLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/RTDBusRoutes/FeatureServer/0", {
+            id: "busroutelines",
+            mode: FeatureLayer.MODE_ONDEMAND,
+            outFields: ['ROUTE']
+        });
+
+
+        var selectionSymbol = new SimpleLineSymbol().setColor(new Color("#000080"));
+        busRouteLayer.setSelectionSymbol(selectionSymbol);
+        var query = new Query();
+        query.outFields = "ROUTE";
+        query.where = "ROUTE IN ('100X', '16L')";
+        query.returnGeometry = true;
+        busRouteLayer.on("click", function () {
+
+            busRouteLayer.selectFeatures(query, FeatureLayer.SELECTION_NEW);
+        });
+
+
 
         lightRailLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/5", {
             id: "lightraillines",
@@ -169,7 +191,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 		neighborhoodLabelLayer.addFeatureLayer(neighborhoodLayer, neighborhoodLabelRenderer, "${NBHD_NAME}");
 		neighborhoodLabelLayer.minScale = "40000";
 
-		map.addLayers([neighborhoodLayer, councilLayer, lightRailLayer, bikeRouteLayer, pnrLayer,
+		map.addLayers([neighborhoodLayer, councilLayer, busRouteLayer, lightRailLayer, bikeRouteLayer, pnrLayer,
             neighborhoodLabelLayer, councilLabelLayer, lightRailStationLayer, busStopLayer, bikeRackLayer, bCycleLayer]);
 
     });
