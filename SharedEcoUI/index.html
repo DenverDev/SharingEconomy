@@ -143,93 +143,82 @@
         <div class="row mapui">
         	<div class="col-md-3">
                
-      		<ul class="nav nav-pills nav-stacked">
-      			<li class="active"><a href="#Bicycling">Bicycling</a></li>
+      		<!--<ul class="nav nav-pills nav-stacked">
       			<li>
-      				<a href="#carshare">Car Share</a></li>
+      				<a href="#bcycle">B Cycle</a>
+                </li>
       			<li>
-      				<a href="#public">Public</a></li>
-      			<li class="dropdown">
-      				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Dropdown <span class="caret"></span></a>
-    				<ul class="dropdown-menu">
-    					<li>Item 1</li>
-            			<li>Item 2</li>
-    				</ul>
+      				<a href="#trails">Trails</a>
+                </li>
+      			<li>
+      				<a href="#path">Path</a>
   	  			</li>
-    		</ul>
+    		</ul>-->
             
             
 			<div class="panel panel-default">
             
-   				<div class="panel-heading">
-         			<h4 class="panel-title"
-             			data-toggle="collapse" 
+   				<div id="panelhead">
+                	<ul class="nav nav-pills nav-stacked">
+         			<li	data-toggle="collapse" 
              			data-target="#collapseOne">
-             			Bicycling
-         			</h4>
-    			</div>
+             			<a href="#">Bicycling</a>
+         			</li>
+                    </ul>
+                </div>
+    			
     			<div id="collapseOne" class="panel-collapse collapse">
         			<div class="panel-body">
-        				<div class="panel-heading">
-         					<h4 id="bcycle" class="panel-title">
-             					B-Cycle Stations
-         					</h4>
-                        </div>
-                        <div class="panel-heading">
-         					<h4 id="trails" class="panel-title">
-            					Trails
-         					</h4>
-                        </div>
-                        <div class="panel-heading">
-         					<h4 id="paths" class="panel-title">
-            					Paths
-        					</h4>
-        				</div>
+        				<ul class="nav nav-pills nav-stacked">
+      						<li id="bcycle">
+      				<a href="#">B Cycle</a>
+                			</li>
+      						<li id="trails">
+      				<a href="#">Trails</a>
+                			</li>
+      						<li id="path">
+      				<a href="#">Path</a>
+  	  						</li>
+    					</ul>
     				</div>
                 </div>
     
-    			<div class="panel-heading">
-         			<h4 class="panel-title"
-             			data-toggle="collapse" 
+    			<ul class="nav nav-pills nav-stacked">
+         			<li	data-toggle="collapse" 
              			data-target="#collapseTwo">
-             			Car Share
-         			</h4>
-    			</div>
+             			<a href="#">Car Share</a>
+         			</li>
+    			</ul>
     			<div id="collapseTwo" class="panel-collapse collapse">
-        			<div class="panel-body">
-						<div class="panel-heading">
-         					<h4 id="car2go" class="panel-title">
-             					Car2Go
-         					</h4>
-                        </div>
-                        <div class="panel-heading">
-                            <h4 id="lyft" class="panel-title">
-             					Lyft
-         					</h4>
-    					</div>
-                    </div>
+                	<div class="panel-body">
+        				<ul class="nav nav-pills nav-stacked">
+      						<li id="car2go">
+      				<a href="#">Car2Go</a>
+                			</li>
+      						<li id="lyft">
+      				<a href="#">Lyft</a>
+                			</li>
+    					</ul>
+    				</div>
                 </div> 
 
-				<div class="panel-heading">
-         			<h4 class="panel-title"
-             			data-toggle="collapse" 
+				<ul class="nav nav-pills nav-stacked">
+         			<li	data-toggle="collapse" 
              			data-target="#collapseThree">
-            			Public
-         			</h4>
-    			</div>
+            			<a href="#">Public</a>
+         			</li>
+    			</ul>
     			<div id="collapseThree" class="panel-collapse collapse">
                 	<div class="panel-body">
-						<div class="panel-heading">
-         					<h4 id="lightrail" class="panel-title">
-             					Light Rail
-         					</h4>
-                        </div>
-                        <div class="panel-heading">
-                            <h4 id="bus" class="panel-title">
-             					Bus
-         					</h4>
-    					</div>
-                    </div>
+        				<ul class="nav nav-pills nav-stacked">
+      						<li id="lightrail">
+      				<a href="#">Light Rail</a>
+                			</li>
+      						<li id="bus">
+      				<a href="#">Bus</a>
+                			</li>
+    					</ul>
+    				</div>
     			</div>
     
     
@@ -263,17 +252,23 @@
 			$(document).ready(function() {
 				
 				$(".nav li").on("click", function(e) {
-      				$(".nav li").removeClass("active");
-					$(e.target).parent().addClass("active");
+      				if($(e.target).parent().hasClass("active")){
+						$(e.target).parent().removeClass("active");
+					}else{
+						$(e.target).parent().addClass("active");
+					}
+						
+					//$(".nav li").removeClass("active");
+					//$(e.target).parent().addClass("active");
 					    			});
 		
 			});
 			
-			$('#collapseTwoA').on('show.bs.collapse', function () {
+			$('#car2go').on('click', function () {
   				getCarToGo('Denver','');
 			})
 			
-			$('#collapseTwoB').on('show.bs.collapse', function () {
+			$('#lyft').on('click', function () {
 				getLyft('Denver','');
 			})
     

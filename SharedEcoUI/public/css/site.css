@@ -608,9 +608,11 @@ margin-top: 80px;
 .panel-heading:hover, .panel-heading:focus {text-decoration: none;
 background-color: #003366;}
 
-<!-- panel -->
+.panel-body {
+padding: 0 !important;
+}
 
-
+<!-------------------------------------------------------->
 .navbar-header{
   transition: all 1s;
   -moz-transition: all 1s; /* Firefox 4 */
@@ -659,6 +661,12 @@ margin-top: 0px;
 	padding:0px;
 	font-family:'Lato',Arial,sans-serif;
 	font-weight:300;
+}
+
+.nav>li>a {
+position: relative;
+display: block;
+padding: 10px 15px;
 }
 
 * {
