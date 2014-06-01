@@ -42,59 +42,69 @@
 	<script id="pnr_view" type="text/template"></>
 		<div class="address">
 			<span class="street"><%= street %></span>
-			<span class="city"><%= city %></span>,
-			<span class="state"><%= state %></span>
-			<span class="zip"><%= zip %></span>
+			<% if (city && state && zip){ %>
+				<span class="city"><%= city %></span>,
+				<span class="state"><%= state %></span>
+				<span class="zip"><%= zip %></span>
+			<% } %>
 		</div>
 		<div class="panel-group" id="accordionFlyout">
+			<% if (shelters || parking || lockers || racks){ %>
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<a data-toggle="collapse" data-parent="#accordionFlyout" href="#collapseOneFlyout"> Location information </a> 
 				</div>
 				<div id="collapseOneFlyout" class="panel-collapse collapse">
 					<div class="panel-body">
-					<% if (shelters){ %>
-						<div class="block"><%= shelters %> shelter<% if (shelters > 1){ %>s<% } %></div>
-					<% } %>
-					<% if (parking){ %>
-						<div class="block"><%= parking %> parking space<% if (parking > 1){ %>s<% } %></div>
-					<% } %>
-					<% if (lockers){ %>
-						<div class="block"><%= lockers %> locker<% if (lockers > 1){ %>s<% } %></div>
-					<% } %>
-					<% if (racks){ %>
-						<div class="block"><%= racks %> bike rack<% if (racks > 1){ %>s<% } %></div>
-					<% } %>
+						<% if (shelters){ %>
+							<div class="block"><%= shelters %> shelter<% if (shelters > 1){ %>s<% } %></div>
+						<% } %>
+						<% if (parking){ %>
+							<div class="block"><%= parking %> parking space<% if (parking > 1){ %>s<% } %></div>
+						<% } %>
+						<% if (lockers){ %>
+							<div class="block"><%= lockers %> locker<% if (lockers > 1){ %>s<% } %></div>
+						<% } %>
+						<% if (racks){ %>
+							<div class="block"><%= racks %> bike rack<% if (racks > 1){ %>s<% } %></div>
+						<% } %>
 					</div>
 				</div>
 			</div>
+			<% } %>
+			<% if (routes.local || routes.express || routes.limited || routes.regional || routes.skyride || routes.lightrail || routes.routes){ %>
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<a data-toggle="collapse" data-parent="#accordionFlyout" href="#collapseTwoFlyout"> Routes available </a> 
 				</div>
 				<div id="collapseTwoFlyout" class="panel-collapse collapse">
 					<div class="panel-body">
-					<% if (routes.local !== ' '){ %>
-						<div class="block"><span>Local Bus Routes</span><%= routes.local %></div>
-					<% } %>
-					<% if (routes.express !== ' '){ %>
-						<div class="block"><span>Express Bus Routes</span>*<%= routes.express %>*</div>
-					<% } %>
-					<% if (routes.limited !== ' '){ %>
-						<div class="block"><span>Limited Bus Routes</span><%= routes.limited %></div>
-					<% } %>
-					<% if (routes.regional !== ' '){ %>
-						<div class="block"><span>Regional Bus Routes</span><%= routes.regional %></div>
-					<% } %>
-					<% if (routes.skyride !== ' '){ %>
-						<div class="block"><span>SkyRide Bus Routes</span><%= routes.skyride %></div>
-					<% } %>
-					<% if (routes.lightrail !== ' '){ %>
-						<div class="block"><span>Light Rail Lines</span><%= routes.lightrail %></div>
-					<% } %>
+						<% if (routes.local && routes.local !== ' '){ %>
+							<div class="block"><span>Local Bus Routes</span><%= routes.local %></div>
+						<% } %>
+						<% if (routes.express && routes.express !== ' '){ %>
+							<div class="block"><span>Express Bus Routes</span><%= routes.express %></div>
+						<% } %>
+						<% if (routes.limited && routes.limited !== ' '){ %>
+							<div class="block"><span>Limited Bus Routes</span><%= routes.limited %></div>
+						<% } %>
+						<% if (routes.regional && routes.regional !== ' '){ %>
+							<div class="block"><span>Regional Bus Routes</span><%= routes.regional %></div>
+						<% } %>
+						<% if (routes.skyride && routes.skyride !== ' '){ %>
+							<div class="block"><span>SkyRide Bus Routes</span><%= routes.skyride %></div>
+						<% } %>
+						<% if (routes.lightrail && routes.lightrail !== ' '){ %>
+							<div class="block"><span>Light Rail Lines</span><%= routes.lightrail %></div>
+						<% } %>
+						<% if (routes.routes && routes.routes !== ' '){ %>
+							<div class="block"><span>Bus Routes</span><%= routes.routes %></div>
+						<% } %>
+						<div id="busRoutes"><a href="javascript: rtdInfoTemplate.getBusRoutes();" data-target='<%= routes.queryString %>'>Display Routes on Map</a></div>
 					</div>
 				</div>
 			</div>
+			<% } %>
 		</div>
 	</script>
 	<script src="http://js.arcgis.com/3.9/"></script>
@@ -110,27 +120,8 @@
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a class="navbar-brand" href="#">The Sharing Economy: Transportation</a> 
 			</div>
 			<div class="navbar-collapse collapse">
-				<!--<ul class="nav navbar-nav">
-					<li class="active"><a href="#">Link</a></li>
-					<li><a href="#">Link</a></li>
-					<li><a href="#">Link</a></li>
-					<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a> 
-					<ul class="dropdown-menu">
-						<li><a href="#">Action</a></li>
-						<li><a href="#">Another action</a></li>
-						<li><a href="#">Something else here</a></li>
-						<li class="divider"></li>
-						<li class="dropdown-header">Nav header</li>
-						<li><a href="#">Separated link</a></li>
-						<li><a href="#">One more separated link</a></li>
-					</ul>
-					</li>
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<li class="active"><a href="./">Default</a></li>
-					<li><a href="../navbar-static-top/">Static top</a></li>
-					<li><a href="../navbar-fixed-top/">Fixed top</a></li>
-				</ul>-->
+				<div id="geocoder">
+                </div>
 			</div>
 
 <!--/.nav-collapse -->
@@ -182,7 +173,7 @@
     					</ul>
                                         
                 		<div class="serviceInfo">
-                        	<a href="https://denver.bcycle.com/">Denver B Cycle/</a>
+                        	<a href="https://denver.bcycle.com/">Denver B Cycle</a>
                    		</div>
     				</div>
                 </div>
@@ -290,7 +281,7 @@
 				getLyft('Denver','');
 			})
     
-
+});
 			</script>
 </body>
 </html>

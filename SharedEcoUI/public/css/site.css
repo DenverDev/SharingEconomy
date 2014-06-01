@@ -310,7 +310,7 @@ footerbar {
 	background-image: -o-linear-gradient(top, #2FA9DE, #003366); 
 	background-image: linear-gradient(top, #2FA9DE, #003366); 
 
-	behavior:url(/PIE.htc);   	
+	behavior:url(/PIE.htc);
 }
 .buttonlightblue:active {
 	outline: none;
@@ -322,7 +322,7 @@ footerbar {
 .buttonlightblue::-moz-focus-inner {
  border: none;
 }
- 
+
 
 #map {
 	min-height: 600px;
@@ -349,6 +349,10 @@ footerbar {
 .esriPopup .panel span {
 	display: block;
 }
+.esriPopup .titleButton.maximize {
+	display: none;
+}
+
 
 #map_graphics_layer {
 	display: none !important;
