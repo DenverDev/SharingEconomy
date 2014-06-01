@@ -14,16 +14,16 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
             sliderStyle: "small"
         });
 
-        //geocoder = new Geocoder({
-        //    map: map,
-        //    autoComplete: true,
-        //    arcgisGeocoder: true,
-        //    minCharacters: 3,
-        //    maxLocations: 3,
-        //    theme: "arcgisGeocoder"
-        //}, "search");
+        geocoder = new Geocoder({
+            map: map,
+            autoComplete: true,
+            arcgisGeocoder: true,
+            minCharacters: 3,
+            maxLocations: 3,
+            theme: "arcgisGeocoder"
+        }, "geocoder");
 
-        //geocoder.startup();
+        geocoder.startup();
 
         var bikeRackRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bikeRack.png', 26, 36));
         var busStopRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bus.png', 25, 36));
