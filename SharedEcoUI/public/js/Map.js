@@ -19,8 +19,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
             autoComplete: true,
             arcgisGeocoder: true,
             theme: "arcgisGeocoder",
-            searchExtent: new Extent(-11750306.266280131,4787558.465757037,-11633357.613003766,4879282.899699284, new SpatialReference({ wkid:102100 })),
-            placeholder: "Search for an address in metro Denver"
+            searchExtent: new Extent(-11750306.266280131,4787558.465757037,-11633357.613003766,4879282.899699284, new SpatialReference({ wkid:102100 }))
         }, "geocoder");
 
         geocoder.startup();
