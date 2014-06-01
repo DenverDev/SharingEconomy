@@ -227,7 +227,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
         councilLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/6", {
             id: "councildistricts",
             mode: FeatureLayer.MODE_ONDEMAND,
-            outFields: ['DIST_REP']
+            outFields: ['DIST_NUM', 'DIST_REP']
         });
 
         var councilLabelLayer = new LabelLayer();
@@ -237,7 +237,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
         textSymbol.setFont(font);
         textSymbol.setColor(color);
         var councilLabelRenderer = new SimpleRenderer(textSymbol);
-        councilLabelLayer.addFeatureLayer(councilLayer, councilLabelRenderer, "${DIST_REP}");
+        councilLabelLayer.addFeatureLayer(councilLayer, councilLabelRenderer, "District ${DIST_NUM}: ${DIST_REP}");
         councilLabelLayer.minScale = "100000";
         councilLabelLayer.maxScale = "40000"
 
@@ -307,6 +307,7 @@ $(document).ready(function() {
 				busRouteLayer.setVisibility(true);
 				busStopLayer.setVisibility(true);
 				pnrLayer.setVisibility(true);
+				featureLayer.setVisibility(true);
 			} else if (layerType === 'lightrail') {
 				lightRailLayer.setVisibility(true);
 				lightRailStationLayer.setVisibility(true);
