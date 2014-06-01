@@ -120,27 +120,14 @@
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a class="navbar-brand" href="#">The Sharing Economy: Transportation</a> 
 			</div>
 			<div class="navbar-collapse collapse">
-				<!--<ul class="nav navbar-nav">
-					<li class="active"><a href="#">Link</a></li>
-					<li><a href="#">Link</a></li>
-					<li><a href="#">Link</a></li>
-					<li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a> 
-					<ul class="dropdown-menu">
-						<li><a href="#">Action</a></li>
-						<li><a href="#">Another action</a></li>
-						<li><a href="#">Something else here</a></li>
-						<li class="divider"></li>
-						<li class="dropdown-header">Nav header</li>
-						<li><a href="#">Separated link</a></li>
-						<li><a href="#">One more separated link</a></li>
-					</ul>
-					</li>
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<li class="active"><a href="./">Default</a></li>
-					<li><a href="../navbar-static-top/">Static top</a></li>
-					<li><a href="../navbar-fixed-top/">Fixed top</a></li>
-				</ul>-->
+				<form class="navbar-form navbar-left" role="search">
+					<button type="submit" class="btn btn-default">
+						<span class="glyphicon glyphicon-search"></span>
+					</button>
+					<button type="submit" class="btn btn-default">
+						<span class="glyphicon glyphicon-screenshot"></span>
+					</button>
+				</form>
 			</div>
 
 <!--/.nav-collapse -->
@@ -166,15 +153,13 @@
     		</ul>-->
             
             
-			<div class="panel panel-default">
+			<div class="panel panel-default mainMenu">
             
-   				<div id="panelhead">
-                	<ul class="nav nav-pills nav-stacked">
-         			<li id="bicycling" data-toggle="collapse" data-target="#collapseOne">
+				<ul class="nav nav-pills nav-stacked">
+         			<li id="bicycling" class="panelhead active" data-toggle="collapse" data-target="#collapseOne">
              			<a href="#">Bicycling</a>
          			</li>
-                    </ul>
-                </div>
+				</ul>
     			
     			<div id="collapseOne" class="panel-collapse collapse">
         			<div class="panel-body">
@@ -193,7 +178,7 @@
                 </div>
     
     			<ul class="nav nav-pills nav-stacked">
-         			<li id="carshare"	data-toggle="collapse" 
+         			<li id="carshare" class="panelhead active"	data-toggle="collapse" 
              			data-target="#collapseTwo">
              			<a href="#">Car Share</a>
          			</li>
@@ -201,10 +186,10 @@
     			<div id="collapseTwo" class="panel-collapse collapse">
                 	<div class="panel-body">
         				<ul class="nav nav-pills nav-stacked">
-      						<li id="car2go">
+      						<li id="car2go" class="active">
       				<a href="#">Car2Go</a>
                 			</li>
-      						<li id="lyft">
+      						<li id="lyft" class="active">
       				<a href="#">Lyft</a>
                 			</li>
     					</ul>
@@ -212,18 +197,18 @@
                 </div> 
 
 				<ul class="nav nav-pills nav-stacked">
-         			<li id="public"	data-toggle="collapse" 
+         			<li id="public" class="panelhead active"	data-toggle="collapse" 
              			data-target="#collapseThree">
             			<a href="#">Public</a>
          			</li>
     			</ul>
-    			<div id="collapseThree" class="panel-collapse collapse">
+    			<div id="collapseThree" class="panel-collapse collapse in">
                 	<div class="panel-body">
         				<ul class="nav nav-pills nav-stacked">
-      						<li id="lightrail">
+      						<li id="lightrail" class="">
       				<a href="#">Light Rail</a>
                 			</li>
-      						<li id="bus">
+      						<li id="bus" class="">
       				<a href="#">Bus</a>
                 			</li>
     					</ul>
@@ -232,6 +217,42 @@
     
     
 			</div><!-- end main panel -->
+
+
+
+<!-- 
+<div class="" id="accordion2">
+	<h4 class="panel-title">
+		<a data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2"> Bicycling</a> 
+	</h4>
+	<div id="collapseOne2" class="panel-collapse collapse">
+		<ul class="nav nav-pills nav-stacked">
+			<li id="bcycle" class="active"> <a href="#">B Cycle</a> </li>
+			<li id="trails" class="active"> <a href="#">Trails</a> </li>
+			<li id="path" class="active"> <a href="#">Path</a> </li>
+		</ul>
+	</div>
+	<h4 class="panel-title">
+		<a data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo2"> Car Share </a> 
+	</h4>
+	<div id="collapseTwo2" class="panel-collapse collapse">
+		<ul class="nav nav-pills nav-stacked">
+			<li id="car2go" class="active"> <a href="#">Car2Go</a> </li>
+			<li id="lyft" class="active"> <a href="#">Lyft</a> </li>
+		</ul>
+	</div>
+	<h4 class="panel-title">
+		<a data-toggle="collapse" data-parent="#accordion2" href="#collapseThree3"> Public</a> 
+	</h4>
+	<div id="collapseThree3" class="panel-collapse collapse in">
+		<ul class="nav nav-pills nav-stacked">
+			<li id="lightrail" class=""> <a href="#">Light Rail</a> </li>
+			<li id="bus" class=""> <a href="#">Bus</a> </li>
+		</ul>
+	</div>
+</div>
+ -->
+
 
             
             </div><!-- end col3 -->
@@ -258,30 +279,45 @@
 <script type="text/javascript" src="public/js/Map.js"></script>
 <script type="text/javascript">
 			
-			$(document).ready(function() {
-				
-				$(".nav li").on("click", function(e) {
-      				if($(e.target).parent().hasClass("active")){
-						$(e.target).parent().removeClass("active");
-					}else{
-						$(e.target).parent().addClass("active");
-					}
-						
-					//$(".nav li").removeClass("active");
-					//$(e.target).parent().addClass("active");
-					    			});
-		
-			});
-			
-			$('#car2go').on('click', function () {
-  				getCarToGo('Denver','');
-			})
-			
-			$('#lyft').on('click', function () {
-				getLyft('Denver','');
-			})
-    
+$(document).ready(function() {
+	$(".nav li.panelhead").on("click", function(e) {
+		if($(e.target).parent().hasClass("active")){
+//			$(e.target).parent().removeClass("active");
 
+console.log('on head');
+
+		}else{
+//			$(e.target).parent().addClass("active");
+
+console.log('off head');
+
+		}
+
+	});
+	$(".collapse .nav li").on("click", function(e) {
+		if($(e.target).parent().hasClass("active")){
+//			$(e.target).parent().removeClass("active");
+
+console.log('on sub');
+
+		}else{
+//			$(e.target).parent().addClass("active");
+
+console.log('off sub');
+
+		}
+
+	});
+	
+	$('#car2go').on('click', function () {
+		getCarToGo('Denver','');
+	});
+	
+	$('#lyft').on('click', function () {
+		getLyft('Denver','');
+	});
+    
+});
 			</script>
 </body>
 </html>
