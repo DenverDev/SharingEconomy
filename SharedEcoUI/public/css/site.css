@@ -328,13 +328,19 @@ footerbar {
 	min-height: 600px;
 }
 
-.contentPane .address .street {
+.esriPopup .contentPane {
+	line-height: normal;
+}
+.esriPopup .contentPane .block {
+	margin-bottom: 10px;
+}
+.esriPopup .contentPane .address {
+	margin-bottom: 10px;
+}
+.esriPopup .contentPane .address .street {
 	display: block;
 }
-.contentPane .docs {
-	margin-top: 10px;
-}
-.contentPane .docs span {
+.esriPopup .contentPane .docs span {
 	font-weight: bold;
 }
 
