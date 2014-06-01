@@ -1,10 +1,10 @@
 var map;
 require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/layers/LabelLayer", "esri/symbols/PictureMarkerSymbol",
 "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/TextSymbol", "esri/symbols/SimpleLineSymbol",
-"esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dojo/_base/Color",
+"esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dojo/_base/Color", "esri/dijit/Geocoder",
 "esri/tasks/query", "dijit/popup", "dojo/domReady!"],
     function (Map, InfoTemplate, FeatureLayer, LabelLayer, PictureMarkerSymbol, Font, SimpleMarkerSymbol, TextSymbol, SimpleLineSymbol,
-        SimpleRenderer, TooltipDialog, Color, Query, dijitPopup) {
+        SimpleRenderer, TooltipDialog, Color, Geocoder, Query, dijitPopup) {
 
         map = new Map("map", {
             basemap: "streets",
@@ -14,11 +14,28 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
             sliderStyle: "small"
         });
 
+        //geocoder = new Geocoder({
+        //    map: map,
+        //    autoComplete: true,
+        //    arcgisGeocoder: true,
+        //    minCharacters: 3,
+        //    maxLocations: 3,
+        //    theme: "arcgisGeocoder"
+        //}, "search");
+
+        //geocoder.startup();
+
         var bikeRackRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bikeRack.png', 26, 36));
         var busStopRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bus.png', 25, 36));
         var pnrRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/parknride.png', 25, 36));
         var rtdLightRailStationRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/lightrail.png', 25, 36));
         var bCycleRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bcycle.png', 25, 36));
+
+        //Set up the tooltip for hovering over points
+        var dialog = new TooltipDialog({
+            id: "tooltipDialog",
+        });
+        dialog.startup();
 
 		//Set up the pop up for displaying additional information about a point
 		bcycleTemplate = $("#bcycle_view");
@@ -38,7 +55,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 
 		rtdTemplate = $('#pnr_view');
 		rtdTemplate = _.template( rtdTemplate.html() );
-		var rtdInfoTemplate = new InfoTemplate();
+		rtdInfoTemplate = new InfoTemplate();
 		rtdInfoTemplate.setTitle(function(graphic){
 			if (graphic.attributes.CLASS) {
 				var locName = graphic.attributes.CLASS
@@ -50,6 +67,22 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 			return locName + ' ' + (graphic.attributes.NAME ? graphic.attributes.NAME : graphic.attributes.STOPNAME);
 		});
 		rtdInfoTemplate.setContent(function(graphic) {
+			var queryString = '';
+			if (graphic.attributes.LOCAL_RT && graphic.attributes.LOCAL_RT !== ' ') queryString += graphic.attributes.LOCAL_RT + '-';
+			if (graphic.attributes.EXPRESS_RT && graphic.attributes.EXPRESS_RT !== ' ') queryString += graphic.attributes.EXPRESS_RT + '-';
+			if (graphic.attributes.LIMITED_RT && graphic.attributes.LIMITED_RT !== ' ') queryString += graphic.attributes.LIMITED_RT + '-';
+			if (graphic.attributes.REGIONAL_R && graphic.attributes.REGIONAL_R !== ' ') queryString += graphic.attributes.REGIONAL_R + '-';
+			if (graphic.attributes.SKYRIDE_RT && graphic.attributes.SKYRIDE_RT !== ' ') queryString += graphic.attributes.SKYRIDE_RT + '-';
+			if (graphic.attributes.ROUTES && graphic.attributes.ROUTES !== ' ') queryString += graphic.attributes.ROUTES;
+			
+			queryString = queryString.replace(/, /g, '-');
+			queryString = queryString.replace(/-/g, '#');
+			queryString = queryString.replace(/#/g, '","');
+			queryString = '"' + queryString + '"';
+			queryString = queryString.replace(/,\"\"/g, '');
+			
+			rtdInfoTemplate.queryString = queryString;
+
 			pnrObj = {
 				'street' : (graphic.attributes.ADDRESS ? graphic.attributes.ADDRESS : graphic.attributes.STOPNAME),
 				'city' : graphic.attributes.CITY,
@@ -62,22 +95,53 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 					'regional' : graphic.attributes.REGIONAL_R,
 					'skyride' : graphic.attributes.SKYRIDE_RT,
 					'lightrail' : graphic.attributes.LINE,
-					'routes' : graphic.attributes.ROUTES
+					'routes' : graphic.attributes.ROUTES,
+					'queryString' : queryString
 				},
 				'parking' : graphic.attributes.AUTOS,
 				'racks' : graphic.attributes.RACKS,
 				'lockers' : graphic.attributes.LOCKERS,
 				'shelters' : graphic.attributes.SHELTERS
 			};
+			
 			return rtdTemplate(pnrObj);
+			
 		});
 
-        //Set up the tooltip for hovering over points
-        var dialog = new TooltipDialog({
-            id: "tooltipDialog",
-        });
-        dialog.startup();
-        
+		var selectionSymbol = new SimpleLineSymbol().setColor(new Color("#000080"));
+		var featureLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/RTDBusRoutes500k/FeatureServer/0", {
+		    id: "filterBusRoutes",
+		    outFields: ['ROUTE']
+		});
+
+		featureLayer.setDefinitionExpression("ROUTE = ''");
+		featureLayer.on("mouse-over", function (e) {
+		    dialog.setContent("Route " + e.graphic.attributes.ROUTE);
+		    dijitPopup.open({
+		        popup: dialog,
+		        x: e.pageX,
+		        y: e.pageY
+		    });
+		});
+
+		featureLayer.on("mouse-out", function () {
+		    dijitPopup.close(dialog);
+		});
+
+		map.addLayer(featureLayer);
+
+		rtdInfoTemplate.getBusRoutes = function () {
+			console.log(rtdInfoTemplate.queryString);
+			var queryString = rtdInfoTemplate.queryString.replace(/\"/g, '\'');
+			console.log(queryString);
+
+			map.removeLayer(featureLayer);
+
+			featureLayer.setDefinitionExpression("ROUTE IN (" + queryString + ")");
+
+			map.addLayer(featureLayer);
+		}
+
         bikeRackLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/3", {
             id: "bikeracks",
             mode: FeatureLayer.MODE_ONDEMAND,
@@ -133,19 +197,20 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
             outFields: ['ROUTE']
         });
 
-
-        var selectionSymbol = new SimpleLineSymbol().setColor(new Color("#000080"));
-        busRouteLayer.setSelectionSymbol(selectionSymbol);
-        var query = new Query();
-        query.outFields = "ROUTE";
-        query.where = "ROUTE IN ('100X', '16L')";
-        query.returnGeometry = true;
-        busRouteLayer.on("click", function () {
-
-            busRouteLayer.selectFeatures(query, FeatureLayer.SELECTION_NEW);
+        busRouteLayer.on("mouse-over", function (e) {
+            dialog.setContent("Route " + e.graphic.attributes.ROUTE);
+            dijitPopup.open({
+                popup: dialog,
+                x: e.pageX,
+                y: e.pageY
+            });
         });
 
-
+        busRouteLayer.on("mouse-out", function () {
+            dijitPopup.close(dialog);
+        });
+        
+        //busRouteLayer.setSelectionSymbol(selectionSymbol);
 
         lightRailLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/5", {
             id: "lightraillines",
@@ -195,5 +260,6 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 
 		map.addLayers([neighborhoodLayer, councilLayer, busRouteLayer, lightRailLayer, bikeRouteLayer, neighborhoodLabelLayer,
             councilLabelLayer, lightRailStationLayer, pnrLayer, busStopLayer, bikeRackLayer, bCycleLayer]);
+
 
     });
