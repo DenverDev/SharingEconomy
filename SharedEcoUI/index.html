@@ -28,7 +28,7 @@
     <![endif]-->
 
 <!-- Underscore JS templates -->
-	<script id="flyout_view" type="text/template"></>
+	<script id="bcycle_view" type="text/template"></>
 		<div class="address">
 			<span class="street"><%= street %></span>
 			<span class="city"><%= city %></span>,
@@ -36,10 +36,39 @@
 			<span class="zip"><%= zip %></span>
 		</div>
 		<% if (docs){ %>
-			<div class="docs"><span><%= docs %></span> total bike docs</div>
-		<% } else if (stuff) { %>
-			<pre><%= stuff %></pre>
+			<div class="block"><span><%= docs %></span> total bike docs</div>
 		<% } %>
+	</script>
+	<script id="pnr_view" type="text/template"></>
+		<div class="address">
+			<span class="street"><%= street %></span>
+			<span class="city"><%= city %></span>,
+			<span class="state"><%= state %></span>
+			<span class="zip"><%= zip %></span>
+		</div>
+		<% if (parking){ %>
+			<div class="block"><%= parking %> spaces</div>
+		<% } %>
+
+
+<!-- 
+
+				'routes' : {
+					'local' : '${LOCAL_RT}',
+					'express' : '${EXPRESS_RT}',
+					'limited' : '${LIMITED_RT}',
+					'regional' : '${REGIONAL_R}',
+					'skyride' : '${SKYRIDE_RT}',
+					'lightrail' : '${LINE}'
+				},
+				'parking' : '${AUTOS}',
+				'racks' : '${RACKS}',
+				'lockers' : '${LOCKERS}',
+				'shelters' : '${SHELTERS}'
+
+ -->
+
+
 	</script>
 	<script src="http://js.arcgis.com/3.9/"></script>
 

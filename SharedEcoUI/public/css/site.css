@@ -331,11 +331,14 @@ footerbar {
 .esriPopup .contentPane {
 	line-height: normal;
 }
+.esriPopup .contentPane .block {
+	margin-bottom: 10px;
+}
+.esriPopup .contentPane .address {
+	margin-bottom: 10px;
+}
 .esriPopup .contentPane .address .street {
 	display: block;
-}
-.esriPopup .contentPane .docs {
-	margin-top: 10px;
 }
 .esriPopup .contentPane .docs span {
 	font-weight: bold;

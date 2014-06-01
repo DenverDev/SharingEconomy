@@ -18,29 +18,40 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
         var bCycleRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bcycle.png', 25, 36));
 
         //Set up the pop up for displaying additional information about a point
-		flyoutTemplate = $("#flyout_view");
-		flyoutTemplate = _.template( flyoutTemplate.html() );
+		bcycleTemplate = $("#bcycle_view");
+		bcycleTemplate = _.template( bcycleTemplate.html() );
 		var bcycleInfoTemplate = new InfoTemplate({
 			title: "B-Cycle ${STATION_NA}",
-			content: flyoutTemplate({
+			content: bcycleTemplate({
 				'street' : '${ADDRESS_LI}',
 				'city' : '${CITY}',
 				'state' : '${STATE}',
 				'zip' : '${ZIP}',
 				'docs' : '${NUM_DOCKS}',
-				'stuff' : ''
 			})
 		});
 
+		pnrTemplate = $("#pnr_view");
+		pnrTemplate = _.template( pnrTemplate.html() );
 		var pnrInfoTemplate = new InfoTemplate({
-			title: "B-Cycle ${STATION_NA}",
-			content: flyoutTemplate({
+			title: "PNR ${NAME}",
+			content: pnrTemplate({
 				'street' : '${ADDRESS}',
 				'city' : '${CITY}',
 				'state' : 'CO',
 				'zip' : '${ZIPCODE}',
-				'docs' : '',
-				'stuff' : 'a${PID} - b${CLASS} - c${LOCAL_RT} - d${EXPRESS_RT} - e${LIMITED_RT} - f${REGIONAL_R} - g${SKYRIDE_RT} - h${LINE} - h${AUTOS} - i${RACKS} - j${LOCKERS} - k${SHELTERS}'
+				'routes' : {
+					'local' : '${LOCAL_RT}',
+					'express' : '${EXPRESS_RT}',
+					'limited' : '${LIMITED_RT}',
+					'regional' : '${REGIONAL_R}',
+					'skyride' : '${SKYRIDE_RT}',
+					'lightrail' : '${LINE}'
+				},
+				'parking' : '${AUTOS}',
+				'racks' : '${RACKS}',
+				'lockers' : '${LOCKERS}',
+				'shelters' : '${SHELTERS}'
 			})
 		});
 
