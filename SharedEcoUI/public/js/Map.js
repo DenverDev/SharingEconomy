@@ -1,8 +1,10 @@
 var map;
 require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/layers/LabelLayer", "esri/symbols/PictureMarkerSymbol",
-"esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/TextSymbol", "esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dojo/_base/Color",
-"dijit/popup", "dojo/domReady!"],
-    function (Map, InfoTemplate, FeatureLayer, LabelLayer, PictureMarkerSymbol, Font, SimpleMarkerSymbol, TextSymbol, SimpleRenderer, TooltipDialog, Color, dijitPopup) {
+"esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/TextSymbol", "esri/symbols/SimpleLineSymbol",
+"esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dojo/_base/Color",
+"esri/tasks/query", "dijit/popup", "dojo/domReady!"],
+    function (Map, InfoTemplate, FeatureLayer, LabelLayer, PictureMarkerSymbol, Font, SimpleMarkerSymbol, TextSymbol, SimpleLineSymbol,
+        SimpleRenderer, TooltipDialog, Color, Query, dijitPopup) {
 
         map = new Map("map", {
             basemap: "streets",
@@ -22,7 +24,8 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 		bcycleTemplate = $("#bcycle_view");
 		bcycleTemplate = _.template( bcycleTemplate.html() );
 		var bcycleInfoTemplate = new InfoTemplate();
-		bcycleData = function(graphic) {
+		bcycleInfoTemplate.setTitle('B-Cycle ${STATION_NA}');
+		bcycleInfoTemplate.setContent(function(graphic) {
 			bcycleObj = {
 				'street' : graphic.attributes.ADDRESS_LI,
 				'city' : graphic.attributes.CITY,
@@ -31,16 +34,24 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 				'docs' : graphic.attributes.NUM_DOCKS
 			};
 			return bcycleTemplate(bcycleObj);
-		};
-		bcycleInfoTemplate.setTitle('B-Cycle ${STATION_NA}');
-		bcycleInfoTemplate.setContent(bcycleData);
+		});
 
-		pnrTemplate = $('#pnr_view');
-		pnrTemplate = _.template( pnrTemplate.html() );
-		var pnrInfoTemplate = new InfoTemplate();
-		pnrData = function(graphic) {
+		rtdTemplate = $('#pnr_view');
+		rtdTemplate = _.template( rtdTemplate.html() );
+		var rtdInfoTemplate = new InfoTemplate();
+		rtdInfoTemplate.setTitle(function(graphic){
+			if (graphic.attributes.CLASS) {
+				var locName = graphic.attributes.CLASS
+			} else if (graphic.attributes.STOPNAME) {
+				var locName = 'Stop'
+			} else {
+				var locName = 'LRT'
+			}
+			return locName + ' ' + (graphic.attributes.NAME ? graphic.attributes.NAME : graphic.attributes.STOPNAME);
+		});
+		rtdInfoTemplate.setContent(function(graphic) {
 			pnrObj = {
-				'street' : graphic.attributes.ADDRESS,
+				'street' : (graphic.attributes.ADDRESS ? graphic.attributes.ADDRESS : graphic.attributes.STOPNAME),
 				'city' : graphic.attributes.CITY,
 				'state' : 'CO',
 				'zip' : graphic.attributes.ZIPCODE,
@@ -50,22 +61,16 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 					'limited' : graphic.attributes.LIMITED_RT,
 					'regional' : graphic.attributes.REGIONAL_R,
 					'skyride' : graphic.attributes.SKYRIDE_RT,
-					'lightrail' : graphic.attributes.LINE
+					'lightrail' : graphic.attributes.LINE,
+					'routes' : graphic.attributes.ROUTES
 				},
 				'parking' : graphic.attributes.AUTOS,
 				'racks' : graphic.attributes.RACKS,
 				'lockers' : graphic.attributes.LOCKERS,
 				'shelters' : graphic.attributes.SHELTERS
 			};
-			return pnrTemplate(pnrObj);
-		};
-		pnrInfoTemplate.setTitle('PNR ${NAME}');
-		pnrInfoTemplate.setContent(pnrData);
-
-        var rtdInfoTemplate = new InfoTemplate({
-            title: "${NAME}",
-            content: "<b>Address:</b> ${ADDRESS}<br/>"
-        });
+			return rtdTemplate(pnrObj);
+		});
 
         //Set up the tooltip for hovering over points
         var dialog = new TooltipDialog({
@@ -103,25 +108,44 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
         pnrLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/1", {
             id: "pnr",
             mode: FeatureLayer.MODE_ONDEMAND,
-            infoTemplate: pnrInfoTemplate,
-            outFields: ['NAME', 'ADDRESS', 'CITY', 'ZIPCODE', 'PID', 'CLASS', 'LOCAL_RT', 'EXPRESS_RT', 'LIMITED_RT', 'REGIONAL_R', 'SKYRIDE_RT', 'LINE', 'AUTOS', 'RACKS', 'LOCKERS', 'SHELTERS']
-
-
+            infoTemplate: rtdInfoTemplate,
+            outFields: ['NAME', 'ADDRESS', 'CLASS', 'CITY', 'ZIPCODE', 'LOCAL_RT', 'EXPRESS_RT', 'LIMITED_RT', 'REGIONAL_R', 'SKYRIDE_RT', 'LINE', 'AUTOS', 'RACKS', 'LOCKERS', 'SHELTERS']
         });
+
         pnrLayer.renderer = pnrRenderer;
 
         lightRailStationLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/2", {
             id: "lightrailstations",
             mode: FeatureLayer.MODE_ONDEMAND,
             infoTemplate: rtdInfoTemplate,
-            outFields: ['NAME', 'ADDRESS']
+            outFields: ['NAME', 'ADDRESS', 'AUTOS', 'RACKS', 'LOCKERS', 'SHELTERS']
         });
         lightRailStationLayer.renderer = rtdLightRailStationRenderer;
-
+        
         bikeRouteLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/4", {
             id: "bikeroutelines",
             mode: FeatureLayer.MODE_ONDEMAND
         });
+
+        busRouteLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/RTDBusRoutes/FeatureServer/0", {
+            id: "busroutelines",
+            mode: FeatureLayer.MODE_ONDEMAND,
+            outFields: ['ROUTE']
+        });
+
+
+        var selectionSymbol = new SimpleLineSymbol().setColor(new Color("#000080"));
+        busRouteLayer.setSelectionSymbol(selectionSymbol);
+        var query = new Query();
+        query.outFields = "ROUTE";
+        query.where = "ROUTE IN ('100X', '16L')";
+        query.returnGeometry = true;
+        busRouteLayer.on("click", function () {
+
+            busRouteLayer.selectFeatures(query, FeatureLayer.SELECTION_NEW);
+        });
+
+
 
         lightRailLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/5", {
             id: "lightraillines",
@@ -139,7 +163,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
         councilLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/6", {
             id: "councildistricts",
             mode: FeatureLayer.MODE_ONDEMAND,
-            outFields: ['DIST_REP', 'DIST_NUM']
+            outFields: ['DIST_REP']
         });
 
         var councilLabelLayer = new LabelLayer();
@@ -149,7 +173,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
         textSymbol.setFont(font);
         textSymbol.setColor(color);
         var councilLabelRenderer = new SimpleRenderer(textSymbol);
-        councilLabelLayer.addFeatureLayer(councilLayer, councilLabelRenderer, "District ${DIST_NUM}: ${DIST_REP}");
+        councilLabelLayer.addFeatureLayer(councilLayer, councilLabelRenderer, "${DIST_REP}");
         councilLabelLayer.minScale = "100000";
         councilLabelLayer.maxScale = "40000"
 
@@ -169,7 +193,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 		neighborhoodLabelLayer.addFeatureLayer(neighborhoodLayer, neighborhoodLabelRenderer, "${NBHD_NAME}");
 		neighborhoodLabelLayer.minScale = "40000";
 
-		map.addLayers([neighborhoodLayer, councilLayer, lightRailLayer, bikeRouteLayer, pnrLayer,
-            neighborhoodLabelLayer, councilLabelLayer, lightRailStationLayer, busStopLayer, bikeRackLayer, bCycleLayer]);
+		map.addLayers([neighborhoodLayer, councilLayer, busRouteLayer, lightRailLayer, bikeRouteLayer, neighborhoodLabelLayer,
+            councilLabelLayer, lightRailStationLayer, pnrLayer, busStopLayer, bikeRackLayer, bCycleLayer]);
 
     });
