@@ -2,9 +2,9 @@ var map;
 require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/layers/LabelLayer", "esri/symbols/PictureMarkerSymbol",
 "esri/symbols/Font", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/TextSymbol", "esri/symbols/SimpleLineSymbol",
 "esri/renderers/SimpleRenderer", "dijit/TooltipDialog", "dojo/_base/Color", "esri/dijit/Geocoder",
-"esri/tasks/query", "dijit/popup", "dojo/domReady!"],
+"esri/geometry/Extent", "esri/SpatialReference", "esri/tasks/query", "dijit/popup", "dojo/domReady!"],
     function (Map, InfoTemplate, FeatureLayer, LabelLayer, PictureMarkerSymbol, Font, SimpleMarkerSymbol, TextSymbol, SimpleLineSymbol,
-        SimpleRenderer, TooltipDialog, Color, Geocoder, Query, dijitPopup) {
+        SimpleRenderer, TooltipDialog, Color, Geocoder, Extent, SpatialReference, Query, dijitPopup) {
 
         map = new Map("map", {
             basemap: "streets",
@@ -18,10 +18,9 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
             map: map,
             autoComplete: true,
             arcgisGeocoder: true,
-            minCharacters: 3,
-            maxLocations: 3,
             theme: "arcgisGeocoder",
-            searchExtent: map.extent
+            searchExtent: new Extent(-11750306.266280131,4787558.465757037,-11633357.613003766,4879282.899699284, new SpatialReference({ wkid:102100 })),
+            placeholder: "Search for an address in metro Denver"
         }, "geocoder");
 
         geocoder.startup();
