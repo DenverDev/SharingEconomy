@@ -310,7 +310,7 @@ footerbar {
 	background-image: -o-linear-gradient(top, #2FA9DE, #003366); 
 	background-image: linear-gradient(top, #2FA9DE, #003366); 
 
-	behavior:url(/PIE.htc);
+	behavior:url(/PIE.htc);   	
 }
 .buttonlightblue:active {
 	outline: none;
@@ -322,7 +322,7 @@ footerbar {
 .buttonlightblue::-moz-focus-inner {
  border: none;
 }
-
+ 
 
 #map {
 	min-height: 600px;
@@ -349,10 +349,6 @@ footerbar {
 .esriPopup .panel span {
 	display: block;
 }
-.esriPopup .titleButton.maximize {
-	display: none;
-}
-
 
 #map_graphics_layer {
 	display: none !important;
@@ -610,7 +606,7 @@ margin-top: 80px;
 
 
 .panel-heading:hover, .panel-heading:focus {text-decoration: none;
-background-color: #003366;}
+/*background-color: #003366;*/}
 
 .panel-body {
 padding: 0 !important;
@@ -672,6 +668,19 @@ position: relative;
 display: block;
 padding: 10px 15px;
 }
+
+.serviceInfo {padding:10px; font-size:14px;}
+
+.panelHead li a{
+	background-image:url('../images/expand.png');
+	background-position:right top;
+	background-repeat:no-repeat; 
+	}
+	
+.panelHead li.active a{
+	background-image:url('../images/collapse.png');
+	background-position:right bottom;
+	}
 
 * {
   -webkit-border-radius: 0 !important;

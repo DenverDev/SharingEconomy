@@ -6,7 +6,7 @@
                     type: "GET",
                     url: ('https://www.car2go.com/api/v2.1/parkingspots'),
                     data: {
-                    	 loc:loc,
+                       loc:loc,
                          oauth_consumer_key: 'car2gowebsite',
                          format: 'json'
                          },
@@ -82,32 +82,44 @@
                                 togoArray.push(line)
                            }
 
-                        //
-                        if(loop){  lyftLayer.graphics=[]; lyftLayer.redraw(); map.setExtent(map.extent); }       // clear map if looped to update
-
-                        // send to arcGis Map Layer
-                        lyftLayer = new esri.layers.GraphicsLayer({
+                         // send to arcGis Map Layer
+                         lyftLayer = map.getLayer('lyft');
+                           if(lyftLayer){ 
+                            lyftLayer.clear(); 
+                           }else{
+                            lyftLayer = new esri.layers.GraphicsLayer({
                                 visible         : true,
                                 id              : 'lyft',
-                        });
-
+                            });
+                          }
+                                 
                         //map.addLayers([cartogoLayer]);
                         $jQ.each(togoArray, function(i,cars) {
-                         if(loop===undefined){
+                         if(loop===undefined && i<35){
                            var point = new esri.geometry.Point(cars["lon"],cars["lat"]);
                            var symbol = new esri.symbol.PictureMarkerSymbol('./public/Images/lyft.png',25, 36);
                            var graphic = new esri.Graphic(point, symbol);
                            lyftLayer.add(graphic);
+                         }else if(i>10 && i<50 && loop==1){
+                           var point = new esri.geometry.Point(cars["lon"]+0.008,cars["lat"]+0.011);
+                           var symbol = new esri.symbol.PictureMarkerSymbol('./public/Images/lyft.png',25, 36);
+                           var graphic = new esri.Graphic(point, symbol);
+                           lyftLayer.add(graphic);
+                         }else if(i>15 && i<60 && loop==2){
+                           var point = new esri.geometry.Point(cars["lon"]+0.016,cars["lat"]+0.019);
+                           var symbol = new esri.symbol.PictureMarkerSymbol('./public/Images/lyft.png',25, 36);
+                           var graphic = new esri.Graphic(point, symbol);
+                           lyftLayer.add(graphic);
+                         }else if(i>25 && i<65){
+                           var point = new esri.geometry.Point(cars["lon"]+0.024,cars["lat"]+0.029);
+                           var symbol = new esri.symbol.PictureMarkerSymbol('./public/Images/lyft.png',25, 36);
+                           var graphic = new esri.Graphic(point, symbol);
+                           lyftLayer.add(graphic);
                          }
-                        });  //lyftLayer.clear();
 
-
-                        map.addLayers([lyftLayer]);
-                        map.on("click", function () {
-                            var graphicsLayer = map.getLayer("lyft");
-                            graphicsLayer.clear();
                         });
 
+                     map.addLayers([lyftLayer]);
 
                     },
                     error: function (msg, url, line) {
@@ -116,6 +128,14 @@
                     }
                 });
         
-        intId = setInterval(function(){ getLyft(loc,'','looped'); },3000);
-
+        delete lyftLayer;
+          var numOfCalls = 0;
+         if(loop===undefined){ 
+          var intervalID = setInterval(function(){ 
+            getLyft(loc,'',numOfCalls); 
+            numOfCalls++;
+              if(numOfCalls == 5){ window.clearInterval(intervalID); }
+          },2000);
+         }
+  
     }

@@ -42,43 +42,58 @@
 	<script id="pnr_view" type="text/template"></>
 		<div class="address">
 			<span class="street"><%= street %></span>
-			<% if (city && state && zip){ %>
-				<span class="city"><%= city %></span>,
-				<span class="state"><%= state %></span>
-				<span class="zip"><%= zip %></span>
-			<% } %>
+			<span class="city"><%= city %></span>,
+			<span class="state"><%= state %></span>
+			<span class="zip"><%= zip %></span>
 		</div>
 		<div class="panel-group" id="accordionFlyout">
-			<% if (shelters || parking || lockers || racks){ %>
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<a data-toggle="collapse" data-parent="#accordionFlyout" href="#collapseOneFlyout"> Location information </a> 
 				</div>
 				<div id="collapseOneFlyout" class="panel-collapse collapse">
 					<div class="panel-body">
-						<% if (shelters){ %>
-							<div class="block"><%= shelters %> shelter<% if (shelters > 1){ %>s<% } %></div>
-						<% } %>
-						<% if (parking){ %>
-							<div class="block"><%= parking %> parking space<% if (parking > 1){ %>s<% } %></div>
-						<% } %>
-						<% if (lockers){ %>
-							<div class="block"><%= lockers %> locker<% if (lockers > 1){ %>s<% } %></div>
-						<% } %>
-						<% if (racks){ %>
-							<div class="block"><%= racks %> bike rack<% if (racks > 1){ %>s<% } %></div>
-						<% } %>
+					<% if (shelters){ %>
+						<div class="block"><%= shelters %> shelter<% if (shelters > 1){ %>s<% } %></div>
+					<% } %>
+					<% if (parking){ %>
+						<div class="block"><%= parking %> parking space<% if (parking > 1){ %>s<% } %></div>
+					<% } %>
+					<% if (lockers){ %>
+						<div class="block"><%= lockers %> locker<% if (lockers > 1){ %>s<% } %></div>
+					<% } %>
+					<% if (racks){ %>
+						<div class="block"><%= racks %> bike rack<% if (racks > 1){ %>s<% } %></div>
+					<% } %>
 					</div>
 				</div>
 			</div>
-			<% } %>
-			<% if (routes.local || routes.express || routes.limited || routes.regional || routes.skyride || routes.lightrail || routes.routes){ %>
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<a data-toggle="collapse" data-parent="#accordionFlyout" href="#collapseTwoFlyout"> Routes available </a> 
 				</div>
 				<div id="collapseTwoFlyout" class="panel-collapse collapse">
 					<div class="panel-body">
+<<<<<<< HEAD
+					<% if (routes.local !== ' '){ %>
+						<div class="block"><span>Local Bus Routes</span><%= routes.local %></div>
+					<% } %>
+					<% if (routes.express !== ' '){ %>
+						<div class="block"><span>Express Bus Routes</span>*<%= routes.express %>*</div>
+					<% } %>
+					<% if (routes.limited !== ' '){ %>
+						<div class="block"><span>Limited Bus Routes</span><%= routes.limited %></div>
+					<% } %>
+					<% if (routes.regional !== ' '){ %>
+						<div class="block"><span>Regional Bus Routes</span><%= routes.regional %></div>
+					<% } %>
+					<% if (routes.skyride !== ' '){ %>
+						<div class="block"><span>SkyRide Bus Routes</span><%= routes.skyride %></div>
+					<% } %>
+					<% if (routes.lightrail !== ' '){ %>
+						<div class="block"><span>Light Rail Lines</span><%= routes.lightrail %></div>
+					<% } %>
+=======
 						<% if (routes.local && routes.local !== ' '){ %>
 							<div class="block"><span>Local Bus Routes</span><%= routes.local %></div>
 						<% } %>
@@ -101,10 +116,10 @@
 							<div class="block"><span>Bus Routes</span><%= routes.routes %></div>
 						<% } %>
 						<div id="busRoutes"><a href="javascript: rtdInfoTemplate.getBusRoutes();" data-target='<%= routes.queryString %>'>Display Routes on Map</a></div>
+>>>>>>> 598882d16ee3d46b5a3bcaa3b28aaf161f4f6622
 					</div>
 				</div>
 			</div>
-			<% } %>
 		</div>
 	</script>
 	<script src="http://js.arcgis.com/3.9/"></script>
@@ -149,8 +164,15 @@
             
 			<div class="panel panel-default mainMenu">
             
+<<<<<<< HEAD
+   				<div class="panelHead">
+                	<ul class="nav nav-pills nav-stacked">
+         			<li	data-toggle="collapse" 
+             			data-target="#collapseOne">
+=======
 				<ul class="nav nav-pills nav-stacked">
          			<li id="bicycling" class="panelhead active" data-toggle="collapse" data-target="#collapseOne">
+>>>>>>> 598882d16ee3d46b5a3bcaa3b28aaf161f4f6622
              			<a href="#">Bicycling</a>
          			</li>
 				</ul>
@@ -168,15 +190,21 @@
       				<a href="#">Path</a>
   	  						</li>
     					</ul>
+                                        
+                		<div class="serviceInfo">
+                        	<a href="https://denver.bcycle.com/">Denver B Cycle/</a>
+                   		</div>
     				</div>
                 </div>
-    
+                
+                <div class="panelHead">
     			<ul class="nav nav-pills nav-stacked">
          			<li id="carshare" class="panelhead active"	data-toggle="collapse" 
              			data-target="#collapseTwo">
              			<a href="#">Car Share</a>
          			</li>
     			</ul>
+                </div>
     			<div id="collapseTwo" class="panel-collapse collapse">
                 	<div class="panel-body">
         				<ul class="nav nav-pills nav-stacked">
@@ -187,8 +215,25 @@
       				<a href="#">Lyft</a>
                 			</li>
     					</ul>
+                        
+                                        
+                		<div class="serviceInfo">
+                        	<a href="lyft.com">Lyft</a>
+                    	</div>
     				</div>
                 </div> 
+<<<<<<< HEAD
+				
+                <div class="panelHead">
+					<ul class="nav nav-pills nav-stacked">
+         				<li	data-toggle="collapse" 
+             				data-target="#collapseThree">
+            				<a href="#">Public</a>
+         				</li>
+    				</ul>
+                </div>
+    			<div id="collapseThree" class="panel-collapse collapse">
+=======
 
 				<ul class="nav nav-pills nav-stacked">
          			<li id="public" class="panelhead active"	data-toggle="collapse" 
@@ -197,6 +242,7 @@
          			</li>
     			</ul>
     			<div id="collapseThree" class="panel-collapse collapse in">
+>>>>>>> 598882d16ee3d46b5a3bcaa3b28aaf161f4f6622
                 	<div class="panel-body">
         				<ul class="nav nav-pills nav-stacked">
       						<li id="lightrail" class="">
@@ -206,6 +252,10 @@
       				<a href="#">Bus</a>
                 			</li>
     					</ul>
+                        
+                        <div class="serviceInfo">
+                        	<a href="http://waytogo.org">WaytoGo.org</a>
+                        </div>
     				</div>
     			</div>
     
