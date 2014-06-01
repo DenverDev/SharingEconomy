@@ -642,6 +642,14 @@ background-color: #003366;
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
 background-color: #003366;
 }
+
+.nav-pills>li.active>a{
+	background-image:url('../images/active.png');
+	background-position:95% 5px;
+	background-repeat:no-repeat;	
+}
+
+	
 .nav-pills>li.active {
 font-weight:600;
 }
@@ -678,14 +686,14 @@ padding: 10px 15px;
 
 .panelHead li a{
 	background-image:url('../images/expand.png');
-	background-position:right top;
+	background-position:95% 5px;
 	background-repeat:no-repeat; 
 	}
 	
 
 .panelHead li.active a{
 	background-image:url('../images/collapse.png');
-	background-position:right bottom;
+	background-position:95% bottom;
 	background-color: #006abb;	
 	}
 	
