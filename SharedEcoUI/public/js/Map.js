@@ -91,7 +91,13 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 			
 		});
 		rtdInfoTemplate.getBusRoutes = function () {
-			console.log(rtdInfoTemplate.queryString);
+		    console.log(rtdInfoTemplate.queryString);
+		    var query = new Query();
+		    query.outFields = "ROUTE";
+		    query.where = "ROUTE IN (" + rtdInfoTemplate.queryString + ")";
+		    console.log(query.where);
+		    query.returnGeometry = true;
+            busRouteLayer.selectFeatures(query, FeatureLayer.SELECTION_NEW);
 		}
 
 
@@ -160,16 +166,6 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 
         var selectionSymbol = new SimpleLineSymbol().setColor(new Color("#000080"));
         busRouteLayer.setSelectionSymbol(selectionSymbol);
-        var query = new Query();
-        query.outFields = "ROUTE";
-        query.where = "ROUTE IN ('100X', '16L')";
-        query.returnGeometry = true;
-        busRouteLayer.on("click", function () {
-
-            busRouteLayer.selectFeatures(query, FeatureLayer.SELECTION_NEW);
-        });
-
-
 
         lightRailLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/5", {
             id: "lightraillines",
