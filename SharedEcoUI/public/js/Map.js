@@ -20,6 +20,12 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
         var rtdLightRailStationRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/lightrail.png', 25, 36));
         var bCycleRenderer = new SimpleRenderer(new PictureMarkerSymbol('./public/Images/bcycle.png', 25, 36));
 
+        //Set up the tooltip for hovering over points
+        var dialog = new TooltipDialog({
+            id: "tooltipDialog",
+        });
+        dialog.startup();
+
 		//Set up the pop up for displaying additional information about a point
 		bcycleTemplate = $("#bcycle_view");
 		bcycleTemplate = _.template( bcycleTemplate.html() );
@@ -90,28 +96,41 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
 			return rtdTemplate(pnrObj);
 			
 		});
+
+		var selectionSymbol = new SimpleLineSymbol().setColor(new Color("#000080"));
+		var featureLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/RTDBusRoutes500k/FeatureServer/0", {
+		    id: "filterBusRoutes",
+		    outFields: ['ROUTE']
+		});
+
+		featureLayer.setDefinitionExpression("ROUTE = ''");
+		featureLayer.on("mouse-over", function (e) {
+		    dialog.setContent("Route " + e.graphic.attributes.ROUTE);
+		    dijitPopup.open({
+		        popup: dialog,
+		        x: e.pageX,
+		        y: e.pageY
+		    });
+		});
+
+		featureLayer.on("mouse-out", function () {
+		    dijitPopup.close(dialog);
+		});
+
+		map.addLayer(featureLayer);
+
 		rtdInfoTemplate.getBusRoutes = function () {
 			console.log(rtdInfoTemplate.queryString);
 			var queryString = rtdInfoTemplate.queryString.replace(/\"/g, '\'');
 			console.log(queryString);
-			
-			
-			var query = new Query();
-			query.outFields = "ROUTE";
-			query.where = "ROUTE IN (" + queryString + ")";
-			console.log(query.where);
-			query.returnGeometry = true;
-			busRouteLayer.selectFeatures(query, FeatureLayer.SELECTION_NEW);
+
+			map.removeLayer(featureLayer);
+
+			featureLayer.setDefinitionExpression("ROUTE IN (" + queryString + ")");
+
+			map.addLayer(featureLayer);
 		}
 
-
-
-        //Set up the tooltip for hovering over points
-        var dialog = new TooltipDialog({
-            id: "tooltipDialog",
-        });
-        dialog.startup();
-        
         bikeRackLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/3", {
             id: "bikeracks",
             mode: FeatureLayer.MODE_ONDEMAND,
@@ -167,9 +186,20 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
             outFields: ['ROUTE']
         });
 
+        busRouteLayer.on("mouse-over", function (e) {
+            dialog.setContent("Route " + e.graphic.attributes.ROUTE);
+            dijitPopup.open({
+                popup: dialog,
+                x: e.pageX,
+                y: e.pageY
+            });
+        });
 
-        var selectionSymbol = new SimpleLineSymbol().setColor(new Color("#000080"));
-        busRouteLayer.setSelectionSymbol(selectionSymbol);
+        busRouteLayer.on("mouse-out", function () {
+            dijitPopup.close(dialog);
+        });
+        
+        //busRouteLayer.setSelectionSymbol(selectionSymbol);
 
         lightRailLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/5", {
             id: "lightraillines",

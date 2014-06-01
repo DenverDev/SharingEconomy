@@ -102,7 +102,12 @@
                         });  //lyftLayer.clear();
 
 
-                     map.addLayers([lyftLayer]);
+                        map.addLayers([lyftLayer]);
+                        map.on("click", function () {
+                            var graphicsLayer = map.getLayer("lyft");
+                            graphicsLayer.clear();
+                        });
+
 
                     },
                     error: function (msg, url, line) {
