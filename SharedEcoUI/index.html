@@ -53,9 +53,9 @@
 		<div class="panel-group" id="accordionFlyout">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<a data-toggle="collapse" data-parent="#accordionFlyout" href="#collapseOne"> Location information </a> 
+					<a data-toggle="collapse" data-parent="#accordionFlyout" href="#collapseOneFlyout"> Location information </a> 
 				</div>
-				<div id="collapseOne" class="panel-collapse collapse">
+				<div id="collapseOneFlyout" class="panel-collapse collapse">
 					<div class="panel-body">
 					<% if (shelters){ %>
 						<div class="block"><%= shelters %> shelter<% if (shelters > 1){ %>s<% } %></div>
@@ -74,9 +74,9 @@
 			</div>
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<a data-toggle="collapse" data-parent="#accordionFlyout" href="#collapseTwo"> Routes available </a> 
+					<a data-toggle="collapse" data-parent="#accordionFlyout" href="#collapseTwoFlyout"> Routes available </a> 
 				</div>
-				<div id="collapseTwo" class="panel-collapse collapse">
+				<div id="collapseTwoFlyout" class="panel-collapse collapse">
 					<div class="panel-body">
 					<% if (routes.local !== ' '){ %>
 						<div class="block"><span>Local Bus Routes</span><%= routes.local %></div>
