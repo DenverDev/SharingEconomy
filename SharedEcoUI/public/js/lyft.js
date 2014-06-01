@@ -27,7 +27,7 @@
                         // send to arcGis Map Layer
                         var cartogoLayer = new esri.layers.GraphicsLayer({
                                 visible         : true,
-                                id              : 'cartogo',
+                                id              : 'lyft',
                         });
  
                         map.addLayers([cartogoLayer]);
