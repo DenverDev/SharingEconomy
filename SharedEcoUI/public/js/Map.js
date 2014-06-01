@@ -86,12 +86,13 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
         });
 
         var busStopLayer = new FeatureLayer("http://services.arcgis.com/IZtlGBUe4KTzLOl4/ArcGIS/rest/services/BPX_RTD_BusStops3/FeatureServer/0", {
-            id: "pnr",
+            id: "busStops",
             mode: FeatureLayer.MODE_ONDEMAND,
             infoTemplate: rtdInfoTemplate,
             outFields: ['STOPNAME', 'ROUTES']
         });
         busStopLayer.renderer = busStopRenderer;
+        busStopLayer.minScale = "40000";
 
         var pnrLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/1", {
             id: "pnr",
