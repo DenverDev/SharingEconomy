@@ -31,29 +31,32 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/symb
 			})
 		});
 
-		pnrTemplate = $("#pnr_view");
+		pnrTemplate = $('#pnr_view');
 		pnrTemplate = _.template( pnrTemplate.html() );
-		var pnrInfoTemplate = new InfoTemplate({
-			title: "PNR ${NAME}",
-			content: pnrTemplate({
-				'street' : '${ADDRESS}',
-				'city' : '${CITY}',
+		var pnrInfoTemplate = new InfoTemplate();
+		pnrData = function(graphic) {
+			pnrObj = {
+				'street' : graphic.attributes.ADDRESS,
+				'city' : graphic.attributes.CITY,
 				'state' : 'CO',
-				'zip' : '${ZIPCODE}',
+				'zip' : graphic.attributes.ZIPCODE,
 				'routes' : {
-					'local' : '${LOCAL_RT}',
-					'express' : '${EXPRESS_RT}',
-					'limited' : '${LIMITED_RT}',
-					'regional' : '${REGIONAL_R}',
-					'skyride' : '${SKYRIDE_RT}',
-					'lightrail' : '${LINE}'
+					'local' : graphic.attributes.LOCAL_RT,
+					'express' : graphic.attributes.EXPRESS_RT,
+					'limited' : graphic.attributes.LIMITED_RT,
+					'regional' : graphic.attributes.REGIONAL_R,
+					'skyride' : graphic.attributes.SKYRIDE_RT,
+					'lightrail' : graphic.attributes.LINE
 				},
-				'parking' : '${AUTOS}',
-				'racks' : '${RACKS}',
-				'lockers' : '${LOCKERS}',
-				'shelters' : '${SHELTERS}'
-			})
-		});
+				'parking' : graphic.attributes.AUTOS,
+				'racks' : graphic.attributes.RACKS,
+				'lockers' : graphic.attributes.LOCKERS,
+				'shelters' : graphic.attributes.SHELTERS
+			};
+			return pnrTemplate(pnrObj);
+		};
+		pnrInfoTemplate.setTitle('PNR ${NAME}');
+		pnrInfoTemplate.setContent(pnrData);
 
         var rtdInfoTemplate = new InfoTemplate({
             title: "${NAME}",

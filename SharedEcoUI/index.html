@@ -46,29 +46,56 @@
 			<span class="state"><%= state %></span>
 			<span class="zip"><%= zip %></span>
 		</div>
-		<% if (parking){ %>
-			<div class="block"><%= parking %> spaces</div>
-		<% } %>
-
-
-<!-- 
-
-				'routes' : {
-					'local' : '${LOCAL_RT}',
-					'express' : '${EXPRESS_RT}',
-					'limited' : '${LIMITED_RT}',
-					'regional' : '${REGIONAL_R}',
-					'skyride' : '${SKYRIDE_RT}',
-					'lightrail' : '${LINE}'
-				},
-				'parking' : '${AUTOS}',
-				'racks' : '${RACKS}',
-				'lockers' : '${LOCKERS}',
-				'shelters' : '${SHELTERS}'
-
- -->
-
-
+		<div class="panel-group" id="accordionFlyout">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<a data-toggle="collapse" data-parent="#accordionFlyout" href="#collapseOne"> Location information </a> 
+				</div>
+				<div id="collapseOne" class="panel-collapse collapse">
+					<div class="panel-body">
+					<% if (shelters){ %>
+						<div class="block"><%= shelters %> shelter<% if (shelters > 1){ %>s<% } %></div>
+					<% } %>
+					<% if (parking){ %>
+						<div class="block"><%= parking %> parking space<% if (parking > 1){ %>s<% } %></div>
+					<% } %>
+					<% if (lockers){ %>
+						<div class="block"><%= lockers %> locker<% if (lockers > 1){ %>s<% } %></div>
+					<% } %>
+					<% if (racks){ %>
+						<div class="block"><%= racks %> bike rack<% if (racks > 1){ %>s<% } %></div>
+					<% } %>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<a data-toggle="collapse" data-parent="#accordionFlyout" href="#collapseTwo"> Routes available </a> 
+				</div>
+				<div id="collapseTwo" class="panel-collapse collapse">
+					<div class="panel-body">
+					<% if (routes.local !== ' '){ %>
+						<div class="block"><span>Local Bus Routes</span><%= routes.local %></div>
+					<% } %>
+					<% if (routes.express !== ' '){ %>
+						<div class="block"><span>Express Bus Routes</span>*<%= routes.express %>*</div>
+					<% } %>
+					<% if (routes.limited !== ' '){ %>
+						<div class="block"><span>Limited Bus Routes</span><%= routes.limited %></div>
+					<% } %>
+					<% if (routes.regional !== ' '){ %>
+						<div class="block"><span>Regional Bus Routes</span><%= routes.regional %></div>
+					<% } %>
+					<% if (routes.skyride !== ' '){ %>
+						<div class="block"><span>SkyRide Bus Routes</span><%= routes.skyride %></div>
+					<% } %>
+					<% if (routes.lightrail !== ' '){ %>
+						<div class="block"><span>Light Rail Lines</span><%= routes.lightrail %></div>
+					<% } %>
+					</div>
+				</div>
+			</div>
+		</div>
 	</script>
 	<script src="http://js.arcgis.com/3.9/"></script>
 

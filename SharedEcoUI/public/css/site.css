@@ -332,7 +332,7 @@ footerbar {
 	line-height: normal;
 }
 .esriPopup .contentPane .block {
-	margin-bottom: 10px;
+	margin-bottom: 5px;
 }
 .esriPopup .contentPane .address {
 	margin-bottom: 10px;
@@ -343,7 +343,16 @@ footerbar {
 .esriPopup .contentPane .docs span {
 	font-weight: bold;
 }
+.esriPopup .panel {
+	border: none;
+}
+.esriPopup .panel span {
+	display: block;
+}
 
+#map_graphics_layer {
+	display: none !important;
+}
 <!-- ------------------ CSS by Joey ------------------>
 
 /* -- custom css for Bootstrap 3.x --*/
