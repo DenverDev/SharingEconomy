@@ -20,7 +20,8 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
             arcgisGeocoder: true,
             minCharacters: 3,
             maxLocations: 3,
-            theme: "arcgisGeocoder"
+            theme: "arcgisGeocoder",
+            searchExtent: map.extent
         }, "geocoder");
 
         geocoder.startup();
