@@ -140,6 +140,7 @@ require(["esri/map", "esri/InfoTemplate", "esri/layers/FeatureLayer", "esri/laye
         var councilLabelRenderer = new SimpleRenderer(new TextSymbol().setColor(color));
         councilLabelLayer.addFeatureLayer(councilLayer, councilLabelRenderer, "${DIST_REP}");
         councilLabelLayer.minScale = "100000";
+        councilLabelLayer.maxScale = "40000"
 
 		var neighborhoodLayer = new FeatureLayer("http://services1.arcgis.com/zdB7qR0BtYrg0Xpl/arcgis/rest/services/BruceSharedTransportation/FeatureServer/8", {
 		    id: "neighborhoods",
