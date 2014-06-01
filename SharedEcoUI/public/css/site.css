@@ -349,6 +349,12 @@ footerbar {
 .esriPopup .panel span {
 	display: block;
 }
+.esriPopup .titleButton.maximize {
+	display: none;
+}
+.esriPopup .panel .panel-body div {
+	padding: 10px;
+}
 
 #map_graphics_layer {
 	display: none !important;
@@ -605,7 +611,8 @@ margin-top: 80px;
 
 
 
-.panel-heading:hover, .panel-heading:focus {text-decoration: none; background-color: #006abb;}
+.panel-heading:hover, .panel-heading:focus {text-decoration: none;
+/*background-color: #003366;*/}
 
 .panel-body {
 padding: 0 !important;
@@ -653,9 +660,6 @@ background-color: #003366;
 .nav-pills>li.active {
 font-weight:600;
 }
-
-.panel-heading:hover, .panel-heading:focus {text-decoration: none;
-background-color: #003366;}
 
 .mapui .nav .open>a, .nav .open>a:hover, .nav .open>a:focus {
 background-color: #003366;
