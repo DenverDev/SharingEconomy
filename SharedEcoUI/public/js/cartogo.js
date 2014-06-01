@@ -1,7 +1,7 @@
      function getCarToGo(loc,Scope){  
-
-           $jQ = jQuery.noConflict();
-           $jQ.ajax(
+           var that = this;
+           //$jQ = jQuery.noConflict();
+           $.ajax(
                 {
                     type: "GET",
                     url: ('https://www.car2go.com/api/v2.1/parkingspots'),
@@ -12,7 +12,7 @@
                          },
                     contentType: "application/json; charset=utf-8",
                     dataType: "jsonp",
-                    success: function (data) {
+                    success: function(data) {
                         var outData = '';
                         var togoArray = new Array();
 
@@ -28,14 +28,14 @@
                            }
 
                         // send to arcGis Map Layer
-                        var cartogoLayer = new esri.layers.GraphicsLayer({
+                        cartogoLayer = new esri.layers.GraphicsLayer({
                                 visible         : true,
                                 id              : 'cartogo',
                         });
  
                         map.addLayers([cartogoLayer]);
                         
-                        $jQ.each(togoArray, function(i,cars) {
+                        $.each(togoArray, function(i,cars) {
                            var point = new esri.geometry.Point(cars["lon"],cars["lat"]);
                            if(cars["active"]==1){ 
                            var symbol = new esri.symbol.PictureMarkerSymbol('./public/Images/carshare_inactive.png',25, 36);
@@ -45,7 +45,8 @@
                            var graphic = new esri.Graphic(point, symbol);
                            cartogoLayer.add(graphic);
                         });
-
+                    
+                   
                     },
                     error: function (msg, url, line) {
                         console.log('cartogo input error - error trapped in error: function(msg, url, line)');
@@ -58,8 +59,8 @@
 
           // Simulation on basis of an API endpoint for 3rd parties and their agents
 
-           $jQ = jQuery.noConflict();
-           $jQ.ajax(
+           //$jQ = jQuery.noConflict();
+           $.ajax(
                 {
                     type: "GET",
                     url: ('https://www.car2go.com/api/v2.1/vehicles'),
@@ -94,7 +95,7 @@
                           }
                                  
                         //map.addLayers([cartogoLayer]);
-                        $jQ.each(togoArray, function(i,cars) {
+                        $.each(togoArray, function(i,cars) {
                          if(loop===undefined && i<35){
                            var point = new esri.geometry.Point(cars["lon"],cars["lat"]);
                            var symbol = new esri.symbol.PictureMarkerSymbol('./public/Images/lyft.png',25, 36);
