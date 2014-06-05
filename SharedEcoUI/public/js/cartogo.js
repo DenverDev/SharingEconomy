@@ -66,7 +66,7 @@
                     url: ('https://www.car2go.com/api/v2.1/vehicles'),
                     data: {
                          loc:loc,
-                         oauth_consumer_key: 'car2gowebsite',
+                         oauth_consumer_key: 'SharedEcoTransport',
                          format: 'json'
                          },
                     contentType: "application/json; charset=utf-8",
